@@ -4,5 +4,26 @@
     <string name="app_name">CancerDog</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string-array name="experimentals">
+        <item>Patient #1 Ovarian Cancer Cells</item>
+        <item>Patient #2 Ovarian Cancer Cells</item>
+        <item>Patient #1 Ovarian Cancer Plasma</item>
+        <item>Patient #2 Ovarian Cancer Plasma</item>
+    </string-array>
+    
+    <string-array name="controls">
+        <item>Saline Solution</item>
+        <item>Patient #1 Benign Tumor Cells</item>
+        <item>Patient #2 Benign Tumor Cells</item>
+        <item>Patient #3 Normal Cells</item>
+    </string-array>
+    
+    <string-array name="handlers">
+        <item>Sam</item>
+        <item>Alex</item>
+        <item>Morgan</item>
+        <item>Avery</item>
+    </string-array>
 
 </resources>
