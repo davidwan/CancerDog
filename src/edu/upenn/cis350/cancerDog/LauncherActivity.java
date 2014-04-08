@@ -19,7 +19,7 @@ public class LauncherActivity extends Activity {
 	
 	public void onLaunchButtonClick (View v) {
 		//setContentView(new WheelView(this));
-		Intent i = new Intent(this, PreRandomizeActivity.class);
+		Intent i = new Intent(this, RandomizeActivity.class);
 		
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
