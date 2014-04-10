@@ -1,10 +1,14 @@
 package edu.upenn.cis350.cancerDog;
 
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,7 +27,14 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	private WheelView wheelView;
 	private NumberPicker sampleNumberPicker, controlNumberPicker;
 	private TextView sampleName, controlName;
-	private Spinner sampleSpinner, controlSpinner;
+	private ArrayList<String> experiments;
+	private ArrayList<String> controls;
+	private int sampleCount;
+	private int controlCount;
+	private AlertDialog sampleAlert;
+	private AlertDialog controlAlert;
+	private AlertDialog.Builder sampleBuilder;
+	private AlertDialog.Builder controlBuilder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +46,12 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		// Set up pre-randomize spinners
 		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.experimentals, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		sampleSpinner = (Spinner) findViewById(R.id.spinner1);
-		sampleSpinner.setAdapter(adapter);
+		//sampleSpinner = (Spinner) findViewById(R.id.spinner1);
+		//sampleSpinner.setAdapter(adapter);
 		adapter = ArrayAdapter.createFromResource(this,R.array.controls, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		controlSpinner = (Spinner) findViewById(R.id.spinner2);
-		controlSpinner.setAdapter(adapter);
+		//controlSpinner = (Spinner) findViewById(R.id.spinner2);
+		//controlSpinner.setAdapter(adapter);
 		
 		// Set up number pickers
 		sampleNumberPicker = (NumberPicker) findViewById(R.id.sampleNumberPicker);
@@ -61,19 +72,6 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         Toast.makeText(this, "change", Toast.LENGTH_SHORT).show();
-        if (picker == sampleNumberPicker) {
-        	// 1. Instantiate an AlertDialog.Builder with its constructor
-        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        	// 2. Chain together various setter methods to set the dialog characteristics
-        	builder.setMessage(R.string.dialog_message)
-        	       .setTitle(R.string.dialog_title);
-
-        	// 3. Get the AlertDialog from create()
-        	AlertDialog dialog = builder.create();
-        	
-        	
-        }
     }
 	
 	public void onExitButtonClick (View v) {
@@ -82,6 +80,8 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	}
 	
 	public void onNextButtonClick (View v) {
+		
+        
 		Intent i = new Intent(this, TrialActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
@@ -94,14 +94,50 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		int numSamples = sampleNumberPicker.getValue();
 		int numControls = controlNumberPicker.getValue();
 		wheelView.randomize(numSamples, numControls);
-		sampleName.setText("Red: " + sampleSpinner.getSelectedItem().toString());
+		sampleName.setText("Red: " + "blah");
 		if (numControls > 0) {
-			controlName.setText("Blue: " + controlSpinner.getSelectedItem().toString());
+			controlName.setText("Blue: " + "blah");
 		}
 		else {
 			controlName.setText("Blue: None");
 		}
+		
 		switcher.showNext();
+		
+		experiments = new ArrayList<String> ();
+		controls = new ArrayList<String> ();
+		int counter = 0;
+		
+		sampleCount = numSamples - 1;
+		
+		ArrayList<AlertDialog.Builder> experimentBuilders = new ArrayList<AlertDialog.Builder> ();
+		ArrayList<AlertDialog> experimentDialogs = new ArrayList<AlertDialog> ();
+		
+		for (int i=numControls; i>0; i--) {
+			AlertDialog.Builder temp = new AlertDialog.Builder(this);
+			temp.setTitle("Pick control for #" + i);
+			temp.setItems(R.array.controls, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+		                String[] temp = getResources().getStringArray(R.array.controls);
+		                controls.add(temp[which]);
+		            }
+		     });
+			AlertDialog tempDialog = temp.create();
+			tempDialog.show();
+		}
+		
+		for (int i=numSamples; i>0; i--) {
+			AlertDialog.Builder temp = new AlertDialog.Builder(this);
+			temp.setTitle("Pick experimental for #" + i);
+			temp.setItems(R.array.experimentals, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+		                String[] temp = getResources().getStringArray(R.array.experimentals);
+		                experiments.add(temp[which]);
+		            }
+		     });
+			AlertDialog tempDialog = temp.create();
+			tempDialog.show();
+		}
 	}
 	
 	@Override
