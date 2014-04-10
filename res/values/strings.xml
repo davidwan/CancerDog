@@ -4,6 +4,8 @@
     <string name="app_name">CancerDog</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="dialog_title">Experimental #</string>
+    <string name="dialog_message">Please pick the experimental for #</string>
     
     <string-array name="experimentals">
         <item>Patient #1 Ovarian Cancer Cells</item>
