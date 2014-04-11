@@ -74,18 +74,27 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
         Toast.makeText(this, "change", Toast.LENGTH_SHORT).show();
     }
 	
+	private void saveTrial() {
+		Trial t = Trial.getCurrentTrial();
+		t.setNumControls(sampleNumberPicker.getValue());
+		t.setControls(controls);
+		t.setNumExperimentals(controlNumberPicker.getValue());
+		t.setExperimentals(experiments);
+		t.save();
+	}
+	
 	public void onExitButtonClick (View v) {
+		saveTrial();
 		finish();
         System.exit(0);
 	}
 	
 	public void onNextButtonClick (View v) {
-		
-        
+		saveTrial();
 		Intent i = new Intent(this, TrialActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
-	
+	 
 	public void goToPreRandomizeView (View v) {
 		switcher.showPrevious();
 	}
@@ -120,6 +129,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	                public void onClick(DialogInterface dialog, int which) {
 		                String[] temp = getResources().getStringArray(R.array.controls);
 		                controls.add(temp[which]);
+		                saveTrial();
 		            }
 		     });
 			AlertDialog tempDialog = temp.create();
@@ -133,6 +143,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	                public void onClick(DialogInterface dialog, int which) {
 		                String[] temp = getResources().getStringArray(R.array.experimentals);
 		                experiments.add(temp[which]);
+		                saveTrial();
 		            }
 		     });
 			AlertDialog tempDialog = temp.create();

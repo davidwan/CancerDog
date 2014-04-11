@@ -13,6 +13,8 @@ import android.widget.Spinner;
 
 public class TrialActivity extends Activity{
 	public static final int ButtonClickActivity_ID = 2;
+	private EditText time, videographer, observers;
+	private Spinner handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,20 +22,33 @@ public class TrialActivity extends Activity{
 		setContentView(R.layout.activity_trial);
 		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.handlers, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		Spinner s = (Spinner) findViewById(R.id.spinner1);
-		s.setAdapter(adapter);
-		EditText time = (EditText) findViewById(R.id.editText3);
+		handler = (Spinner) findViewById(R.id.spinner1);
+		handler.setAdapter(adapter);
+		videographer = (EditText) findViewById(R.id.editText1);
+		observers = (EditText) findViewById(R.id.editText2);
+		time = (EditText) findViewById(R.id.editText3);
 		Calendar c = Calendar.getInstance();
 		time.setText(c.get(Calendar.HOUR) + ":" +  c.get(Calendar.MINUTE) + (c.get(Calendar.AM_PM)==0 ? "am" : "pm"));
 		time.setEnabled(false);
 	}
 	
+	private void saveTrial() {
+		Trial t = Trial.getCurrentTrial();
+		t.setTime(time.getText().toString());
+		t.setVideographer(videographer.getText().toString());
+		t.setObservers(observers.getText().toString());
+		t.setHandler((String) handler.getSelectedItem());
+		t.save();
+	}
+	
 	public void onExitButtonClick (View v) {
+		saveTrial();
 		finish();
         System.exit(0);
 	}
 	
 	public void onNextButtonClick (View v) {
+		saveTrial();
 		Intent i = new Intent(this, TrialData.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
