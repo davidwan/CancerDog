@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onLaunchButtonClick"
-        android:text="Start New Trial" />
+        android:text="Start New Session" />
     
     <Button
         android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onExitButtonClick"
-        android:text="Edit Past Trials" />
+        android:text="Edit Past Data" />
     
     <Button
         android:id="@+id/exit"

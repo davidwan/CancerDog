@@ -21,7 +21,7 @@ import android.widget.ViewSwitcher;
 
 public class RandomizeActivity extends Activity implements NumberPicker.OnValueChangeListener{
 	
-	public static final int ButtonClickActivity_ID = 2;
+	public static final int ButtonClickActivity_ID = 3;
 	
 	private ViewSwitcher switcher;
 	private WheelView wheelView;

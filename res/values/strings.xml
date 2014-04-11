@@ -27,5 +27,11 @@
         <item>Morgan</item>
         <item>Avery</item>
     </string-array>
+    
+    <string-array name="results">
+        <item>Miss</item>
+        <item>False</item>
+        <item>Success</item>
+    </string-array>
 
 </resources>

@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 public class TrialActivity extends Activity{
-	public static final int ButtonClickActivity_ID = 4;
+	public static final int ButtonClickActivity_ID = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class TrialActivity extends Activity{
 	}
 	
 	public void onNextButtonClick (View v) {
-		Intent i = new Intent(this, TrialActivity.class);
+		Intent i = new Intent(this, TrialData.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
 

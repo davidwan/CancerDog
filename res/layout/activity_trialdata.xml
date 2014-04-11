@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="1"
+    android:orientation="vertical" >
+
+
+    <TextView
+        android:id="@+id/textView0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="0"
+        android:text="Trial Information"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="1"
+        android:text="Slot #1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="1" />
+    
+     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="2"
+        android:text="Slot #2"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+     
+       <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="2" />
+  
+     <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="3"
+        android:text="Slot #3"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+     <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="3" />
+       
+      <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="4"
+        android:text="Slot #4"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+      
+         <Spinner
+        android:id="@+id/spinner4"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="4" />
+         
+       <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="5"
+        android:text="Slot #5"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+       
+        <Spinner
+        android:id="@+id/spinner5"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="5" />
+        
+        <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="6"
+        android:text="Slot #6"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+         <Spinner
+        android:id="@+id/spinner6"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="6" />
+         
+         <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="7"
+        android:text="Slot #7"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+         
+           <Spinner
+        android:id="@+id/spinner7"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="7" />
+           
+           <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="8"
+        android:text="Slot #8"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+          
+       <Spinner
+        android:id="@+id/spinner8"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="8" />
+       
+       
+    <Button
+		android:id="@+id/prev1"
+	    android:layout_column="0"
+	    android:layout_gravity="left|bottom"
+	    android:layout_row="9"
+	    android:onClick="onExitButtonClick"
+	    android:text="Previous" />
+
+	<Button
+		android:id="@+id/next1"
+	    android:layout_column="0"
+	    android:layout_gravity="right|bottom"
+	    android:layout_row="9"
+	    android:onClick="onNextButtonClick"
+	    android:text="Next Trial" />
+	
+	<Button
+		android:id="@+id/next2"
+	    android:layout_column="0"
+	    android:layout_gravity="center|bottom"
+	    android:layout_row="9"
+	    android:onClick="onNewSessionButtonClick"
+	    android:text="End Session" />
+    
+    
+    
+  
+    
+</GridLayout>

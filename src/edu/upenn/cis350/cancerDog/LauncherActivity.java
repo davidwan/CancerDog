@@ -26,7 +26,7 @@ public class LauncherActivity extends Activity {
 	
 	public void onExitButtonClick (View v) {
 		finish();
-        System.exit(0);
+        System.exit(1);
 	}
 
 	@Override

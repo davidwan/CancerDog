@@ -25,7 +25,23 @@
         android:layout_row="1"
         android:text="Handler"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+    <Button
+		android:id="@+id/prev1"
+	    android:layout_column="0"
+	    android:layout_gravity="left|bottom"
+	    android:layout_row="9"
+	    android:onClick="onExitButtonClick"
+	    android:text="Previous" />
 
+	<Button
+		android:id="@+id/next1"
+	    android:layout_column="0"
+	    android:layout_gravity="right|bottom"
+	    android:layout_row="9"
+	    android:onClick="onNextButtonClick"
+	    android:text="Next" />
+    
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="110dp"
@@ -35,12 +51,31 @@
         android:layout_row="1" />
     
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_gravity="left|top"
         android:layout_row="2"
+        android:text="Dog"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/editText0"
+        android:layout_width="133dp"
+        android:layout_column="0"
+        android:layout_gravity="right|top"
+        android:layout_row="2"
+        android:ems="10" >
+    </EditText>
+    
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="3"
         android:text="Videographer"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -49,7 +84,7 @@
         android:layout_width="133dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
-        android:layout_row="2"
+        android:layout_row="3"
         android:ems="10" >
     </EditText>
     
@@ -59,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_gravity="left|top"
-        android:layout_row="3"
+        android:layout_row="4"
         android:text="Observers"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -68,7 +103,7 @@
         android:layout_width="133dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
-        android:layout_row="3"
+        android:layout_row="4"
         android:ems="10" >
     </EditText>
     
@@ -78,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_gravity="left|top"
-        android:layout_row="4"
+        android:layout_row="5"
         android:text="Time Start"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -87,7 +122,7 @@
         android:layout_width="133dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
-        android:layout_row="4"
+        android:layout_row="5"
         android:ems="10"
         android:inputType="time" >
     </EditText>

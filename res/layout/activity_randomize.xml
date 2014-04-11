@@ -38,7 +38,7 @@
 	            android:layout_gravity="left|bottom"
 	            android:layout_row="9"
 	            android:onClick="onExitButtonClick"
-	            android:text="Next" />
+	            android:text="Previous" />
 
 	        <Button
 	            android:id="@+id/next1"
@@ -46,7 +46,7 @@
 	            android:layout_gravity="right|bottom"
 	            android:layout_row="9"
 	            android:onClick="goToRandomizeView"
-	            android:text="Next" />
+	            android:text="Randomize wheel" />
 
 	        <EditText
 	            android:id="@+id/editText1"
