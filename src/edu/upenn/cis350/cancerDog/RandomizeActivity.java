@@ -27,14 +27,10 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	private WheelView wheelView;
 	private NumberPicker sampleNumberPicker, controlNumberPicker;
 	private TextView sampleName, controlName;
+	private int numSamples, numControls;
+	private int numSelectedSamples, numSelectedControls;
 	private ArrayList<String> experiments;
 	private ArrayList<String> controls;
-	private int sampleCount;
-	private int controlCount;
-	private AlertDialog sampleAlert;
-	private AlertDialog controlAlert;
-	private AlertDialog.Builder sampleBuilder;
-	private AlertDialog.Builder controlBuilder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,38 +93,27 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		switcher.showPrevious();
 	}
 	
-	public void goToRandomizeView (View v) {
-		int numSamples = sampleNumberPicker.getValue();
-		int numControls = controlNumberPicker.getValue();
-		wheelView.randomize(numSamples, numControls);
-		sampleName.setText("Red: " + "blah");
-		if (numControls > 0) {
-			controlName.setText("Blue: " + "blah");
-		}
-		else {
-			controlName.setText("Blue: None");
-		}
-		
-		switcher.showNext();
+	public void selectSamplesAndControls (View v) {
+		numSamples = sampleNumberPicker.getValue();
+		numControls = controlNumberPicker.getValue();
 		
 		experiments = new ArrayList<String> ();
 		controls = new ArrayList<String> ();
-		int counter = 0;
 		
-		sampleCount = numSamples - 1;
-		
-		ArrayList<AlertDialog.Builder> experimentBuilders = new ArrayList<AlertDialog.Builder> ();
-		ArrayList<AlertDialog> experimentDialogs = new ArrayList<AlertDialog> ();
+		numSelectedSamples = 0;
+		numSelectedControls = 0;
 		
 		for (int i=numControls; i>0; i--) {
 			AlertDialog.Builder temp = new AlertDialog.Builder(this);
 			temp.setTitle("Pick control for #" + i);
 			temp.setItems(R.array.controls, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-		                String[] temp = getResources().getStringArray(R.array.controls);
-		                controls.add(temp[which]);
-		                saveTrial();
-		            }
+                public void onClick(DialogInterface dialog, int which) {
+	                String[] temp = getResources().getStringArray(R.array.controls);
+	                controls.add(temp[which]);
+	                saveTrial();
+	                numSelectedControls++;
+	                goToRandomizeView();
+	            }
 		     });
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
@@ -138,14 +123,45 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			AlertDialog.Builder temp = new AlertDialog.Builder(this);
 			temp.setTitle("Pick experimental for #" + i);
 			temp.setItems(R.array.experimentals, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-		                String[] temp = getResources().getStringArray(R.array.experimentals);
-		                experiments.add(temp[which]);
-		                saveTrial();
-		            }
+                public void onClick(DialogInterface dialog, int which) {
+	                String[] temp = getResources().getStringArray(R.array.experimentals);
+	                experiments.add(temp[which]);
+	                saveTrial();
+	                numSelectedSamples++;
+	                goToRandomizeView();
+	            }
 		     });
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
+		}
+	}
+	
+	public void goToRandomizeView () {
+		
+		if (numSelectedSamples == numSamples && numSelectedControls == numControls) {
+			wheelView.randomize(numSamples, numControls);
+			
+			int[] sampleSlots = wheelView.getSampleSlots();
+			StringBuffer sampleText = new StringBuffer();
+			for (int i=0; i<sampleSlots.length; ++i) {
+				sampleText.append("Slot " + sampleSlots[i] + ": " + experiments.get(i) + "\n");
+			}
+			
+			int[] controlSlots = wheelView.getControlSlots();
+			StringBuffer controlText = new StringBuffer();
+			if (controlSlots.length == 0) {
+				controlText.append("None");
+			}
+			else {
+				for (int i=0; i<controlSlots.length; ++i) {
+					controlText.append("Slot " + controlSlots[i] + ": " + controls.get(i) + "\n");
+				}
+			}
+			
+			sampleName.setText(sampleName.getText() + sampleText.toString());
+			controlName.setText(controlName.getText() + controlText.toString());
+			
+			switcher.showNext();
 		}
 	}
 	
