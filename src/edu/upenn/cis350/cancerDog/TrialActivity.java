@@ -33,7 +33,7 @@ public class TrialActivity extends Activity{
 	}
 	
 	private void saveTrial() {
-		Trial t = Trial.getCurrentTrial();
+		Trial t = Trial.getCurrentTrial(this);
 		t.setTime(time.getText().toString());
 		t.setVideographer(videographer.getText().toString());
 		t.setObservers(observers.getText().toString());

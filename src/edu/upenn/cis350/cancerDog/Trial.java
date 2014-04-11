@@ -66,7 +66,8 @@ public class Trial {
 		return getTrial(++numTrials);
 	}
 	
-	public static Trial getCurrentTrial() {
+	public static Trial getCurrentTrial(Context c) {
+		context = c;
 		return getTrial(getNumTrials());
 	}
 	
@@ -147,11 +148,11 @@ public class Trial {
 		StringBuilder s = new StringBuilder();
 		s.append("trialNumber: " + trialNumber + "\n");
 		s.append("numExperimetals: " + numExperimentals + "\n");
-		for(int i=0; i < numExperimentals; i++) {
+		for(int i=0; i < experimentals.size(); i++) {
 			s.append("experimentals" + i + ": " + experimentals.get(i) + "\n");
 		}
 		s.append("numControls: " + numControls + "\n");
-		for(int i=0; i < numControls; i++) {
+		for(int i=0; i < controls.size(); i++) {
 			s.append("controls" + i + ": " + controls.get(i) + "\n");
 		}
 		s.append("handler: " + handler + "\n");

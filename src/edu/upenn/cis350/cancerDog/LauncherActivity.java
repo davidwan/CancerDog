@@ -16,8 +16,7 @@ public class LauncherActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launcher);
-		Trial.context = this;
-		Log.d("GRTTrial", Trial.getCurrentTrial().toString());
+		Log.d("GRTTrial", Trial.getCurrentTrial(this).toString());
 	}
 	
 	public void onLaunchButtonClick (View v) {
@@ -36,8 +35,7 @@ public class LauncherActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.launcher, menu);
-		Trial.context = this;
-		Log.d("GRTTrial", Trial.getCurrentTrial().toString());
+		Log.d("GRTTrial", Trial.getCurrentTrial(this).toString());
 		return true;
 	}
 
