@@ -13,7 +13,7 @@ import android.widget.Spinner;
 
 public class TrialActivity extends Activity{
 	public static final int ButtonClickActivity_ID = 2;
-	private EditText time, videographer, observers;
+	private EditText time, videographer, observers, dog;
 	private Spinner handler;
 
 	@Override
@@ -24,6 +24,7 @@ public class TrialActivity extends Activity{
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		handler = (Spinner) findViewById(R.id.spinner1);
 		handler.setAdapter(adapter);
+		dog = (EditText) findViewById(R.id.editText0);
 		videographer = (EditText) findViewById(R.id.editText1);
 		observers = (EditText) findViewById(R.id.editText2);
 		time = (EditText) findViewById(R.id.editText3);
@@ -35,6 +36,7 @@ public class TrialActivity extends Activity{
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
 		t.setTime(time.getText().toString());
+		t.setDog(dog.getText().toString());
 		t.setVideographer(videographer.getText().toString());
 		t.setObservers(observers.getText().toString());
 		t.setHandler((String) handler.getSelectedItem());

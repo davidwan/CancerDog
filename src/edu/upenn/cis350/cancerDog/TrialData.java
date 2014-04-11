@@ -11,6 +11,7 @@ import android.widget.Spinner;
 public class TrialData extends Activity {
 	
 	public static final int ButtonClickActivity_ID = 1;
+	private Spinner[] spinners = new Spinner[8];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,26 +19,26 @@ public class TrialData extends Activity {
 		setContentView(R.layout.activity_trialdata);
 		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.results, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		Spinner s1 = (Spinner) findViewById(R.id.spinner1);
-		s1.setAdapter(adapter);
-		Spinner s2 = (Spinner) findViewById(R.id.spinner2);
-		s2.setAdapter(adapter);
-		Spinner s3 = (Spinner) findViewById(R.id.spinner3);
-		s3.setAdapter(adapter);
-		Spinner s4 = (Spinner) findViewById(R.id.spinner4);
-		s4.setAdapter(adapter);
-		Spinner s5 = (Spinner) findViewById(R.id.spinner5);
-		s5.setAdapter(adapter);
-		Spinner s6 = (Spinner) findViewById(R.id.spinner6);
-		s6.setAdapter(adapter);
-		Spinner s7 = (Spinner) findViewById(R.id.spinner7);
-		s7.setAdapter(adapter);
-		Spinner s8 = (Spinner) findViewById(R.id.spinner8);
-		s8.setAdapter(adapter);
+		int[] spinnerIds = {R.id.spinner1, R.id.spinner2, R.id.spinner3, R.id.spinner4, R.id.spinner5, R.id.spinner6, R.id.spinner7, R.id.spinner8};
+		for(int i = 0; i < spinnerIds.length; i++) {
+			spinners[i] = (Spinner) findViewById(spinnerIds[i]);
+			spinners[i].setAdapter(adapter);
+		}
+	}
+	
+	private void saveTrial() {
+		Trial t = Trial.getCurrentTrial(this);
+		String[] trialResults = new String[8];
+		for(int i = 0; i < trialResults.length; i++) {
+			trialResults[i] = spinners[i].getSelectedItem().toString();
+		}
+		t.addTrialResult(trialResults);
+		t.save();
 	}
 	
 	public void onNextButtonClick (View v) {
 		//setContentView(new WheelView(this));
+		saveTrial();
 		finish();
 		Intent i = new Intent(this, TrialData.class);
 		
@@ -45,11 +46,13 @@ public class TrialData extends Activity {
 	}
 	
 	public void onNewSessionButtonClick (View v) {
+		saveTrial();
 		Intent i = new Intent(this, LauncherActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
 	
 	public void onExitButtonClick (View v) {
+		saveTrial();
 		finish();
         System.exit(0);
 	}

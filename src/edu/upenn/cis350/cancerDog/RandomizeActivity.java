@@ -76,9 +76,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
-		t.setNumControls(sampleNumberPicker.getValue());
 		t.setControls(controls);
-		t.setNumExperimentals(controlNumberPicker.getValue());
 		t.setExperimentals(experiments);
 		t.save();
 	}

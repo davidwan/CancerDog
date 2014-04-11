@@ -21,9 +21,15 @@ public class LauncherActivity extends Activity {
 	
 	public void onLaunchButtonClick (View v) {
 		//setContentView(new WheelView(this));
+		Trial.getNewTrial();
 		Intent i = new Intent(this, RandomizeActivity.class);
 		
 		startActivityForResult(i,ButtonClickActivity_ID);
+	}
+	
+	public void onViewButtonClick(View v) {
+		Intent i = new Intent(this, ViewActivity.class);
+		startActivityForResult(i, ButtonClickActivity_ID);
 	}
 	
 	public void onExitButtonClick (View v) {
@@ -35,7 +41,6 @@ public class LauncherActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.launcher, menu);
-		Log.d("GRTTrial", Trial.getCurrentTrial(this).toString());
 		return true;
 	}
 

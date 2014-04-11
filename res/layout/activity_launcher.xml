@@ -10,6 +10,13 @@
         android:layout_height="wrap_content"
         android:onClick="onLaunchButtonClick"
         android:text="Start New Session" />
+
+    <Button
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onViewButtonClick"
+        android:text="View Data" />
     
     <Button
         android:id="@+id/edit"
