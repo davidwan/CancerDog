@@ -98,7 +98,7 @@
 	        android:id="@+id/textView3"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Randomized Wheel (start from top, move clockwise)"
+	        android:text="Randomized Wheel"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
 	    
 	    <TextView
@@ -106,14 +106,14 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="Red: experimentals\n"
-	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
 	    <TextView
 	        android:id="@+id/controlName"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="Blue: controls\n"
-	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
 	    <edu.upenn.cis350.cancerDog.WheelView
 	    	android:id="@+id/wheelView"
