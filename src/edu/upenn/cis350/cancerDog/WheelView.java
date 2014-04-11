@@ -30,6 +30,10 @@ public class WheelView extends View {
 	protected ShapeDrawable[] cir;
 	private ArrayList<Integer> sampleSlots = new ArrayList<Integer>();
 	private ArrayList<Integer> controlSlots = new ArrayList<Integer>();
+	
+	private double prevAngle = 0;
+	private double angleChange = 0;
+	private float centerX, centerY;
 
 	protected void init() {
 		paint.setColor(Color.BLACK);	
@@ -37,7 +41,7 @@ public class WheelView extends View {
 		cir = new ShapeDrawable[wheelSize];
 		
 		for (int i=0; i<wheelSize; ++i) {
-			double angle = 2 * Math.PI * i / wheelSize - Math.PI / 2;
+			double angle = 2 * Math.PI * i / wheelSize - Math.PI / 2 + angleChange;
 			cir[i] = new ShapeDrawable(new OvalShape());
 			cir[i].getPaint().setColor(Color.GRAY);
 			int left = (int) (350 + 250 * Math.cos(angle));
@@ -47,18 +51,28 @@ public class WheelView extends View {
 		
 		textPaint.setColor(Color.BLACK);
 		textPaint.setTextSize(50);
-
+		
+		centerX = 350;
+		centerY = 280;
 	}
 	
 	public void onDraw(Canvas canvas) {
-		canvas.drawLine(200, 130, 600, 530, paint);
-		canvas.drawLine(600, 130, 200, 530, paint);
-		canvas.drawLine(400, 50, 400, 610, paint);
-		canvas.drawLine(120, 330, 680, 330, paint);
+		
+		for (int i=0; i<4; ++i) {
+			double angle = Math.PI * i / 4 - Math.PI / 2 + angleChange;
+			int startX = (int) (400 + 250 * Math.cos(angle));
+			int startY = (int) (330 + 250 * Math.sin(angle));
+			int endX = (int) (400 + 250 * Math.cos(angle + Math.PI));
+			int endY = (int) (330 + 250 * Math.sin(angle + Math.PI));
+			canvas.drawLine(startX, startY, endX, endY, paint);
+		}
 		
 		for (int i=0; i<wheelSize; ++i) {
+			double angle = 2 * Math.PI * i / wheelSize - Math.PI / 2 + angleChange;
+			int left = (int) (350 + 250 * Math.cos(angle));
+			int top = (int) (280 + 250 * Math.sin(angle));
+			cir[i].setBounds(left, top, left+100, top+100);
 			cir[i].draw(canvas);
-			double angle = 2 * Math.PI * i / wheelSize - Math.PI / 2;
 			int x = (int) (385 + 250 * Math.cos(angle));
 			int y = (int) (345 + 250 * Math.sin(angle));
 			canvas.drawText("" + (i+1), x, y, textPaint);
@@ -90,6 +104,31 @@ public class WheelView extends View {
 		}
 		
 		invalidate();
+	}
+	
+	public boolean onTouchEvent(MotionEvent e) {
+		float x = e.getX();
+		float y = e.getY();
+		double radius = Math.sqrt((x-centerX) * (x-centerX) + (y-centerY) * (y-centerY));
+		double angle;
+		switch (e.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			prevAngle = Math.asin((x-centerX)/radius);
+			return true;
+		case MotionEvent.ACTION_MOVE:
+			angle = Math.asin((x-centerX)/radius);
+			angleChange -= angle - prevAngle;
+			prevAngle = angle;
+			invalidate();
+			return true;
+		case MotionEvent.ACTION_UP:
+			angle = Math.asin((x-centerX)/radius);
+			angleChange -= angle - prevAngle;
+			invalidate();
+			return true;	
+		default:
+			return false;
+		}
 	}
 	
 	int[] getSampleSlots() {
