@@ -109,21 +109,32 @@ public class WheelView extends View {
 	public boolean onTouchEvent(MotionEvent e) {
 		float x = e.getX();
 		float y = e.getY();
-		double radius = Math.sqrt((x-centerX) * (x-centerX) + (y-centerY) * (y-centerY));
 		double angle;
 		switch (e.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			prevAngle = Math.asin((x-centerX)/radius);
+			prevAngle = Math.atan((y-centerY)/(x-centerX));
 			return true;
 		case MotionEvent.ACTION_MOVE:
-			angle = Math.asin((x-centerX)/radius);
-			angleChange -= angle - prevAngle;
+			angle = Math.atan((y-centerY)/(x-centerX));
+			if (angle-prevAngle > Math.PI/2) {
+				prevAngle += Math.PI;
+			}
+			else if (angle-prevAngle < -Math.PI/2) {
+				prevAngle -= Math.PI;
+			}
+			angleChange += angle - prevAngle;
 			prevAngle = angle;
 			invalidate();
 			return true;
 		case MotionEvent.ACTION_UP:
-			angle = Math.asin((x-centerX)/radius);
-			angleChange -= angle - prevAngle;
+			angle = Math.atan((y-centerY)/(x-centerX));
+			if (angle-prevAngle > Math.PI/2) {
+				prevAngle += Math.PI;
+			}
+			else if (angle-prevAngle < -Math.PI/2) {
+				prevAngle -= Math.PI;
+			}
+			angleChange += angle - prevAngle;
 			invalidate();
 			return true;	
 		default:
