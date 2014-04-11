@@ -83,14 +83,20 @@ public class Trial {
 	public void save() {
 		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putInt("numExperimentals", experimentals.size());
-		for(int i=0; i < experimentals.size(); i++) {
-			editor.putString("experimentals" + i, experimentals.get(i));
+		if (experimentals != null) {
+			editor.putInt("numExperimentals", experimentals.size());
+			for(int i=0; i < experimentals.size(); i++) {
+				editor.putString("experimentals" + i, experimentals.get(i));
+			}
 		}
-		editor.putInt("numControls", controls.size());
-		for(int i=0; i < controls.size(); i++) {
-			editor.putString("controls" + i, controls.get(i));
+		
+		if (controls != null) {
+			editor.putInt("numControls", controls.size());
+			for(int i=0; i < controls.size(); i++) {
+				editor.putString("controls" + i, controls.get(i));
+			}
 		}
+		
 		editor.putString("handler", handler);
 		editor.putString("dog", dog);
 		editor.putString("videographer", videographer);

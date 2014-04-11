@@ -98,7 +98,7 @@
 	        android:id="@+id/textView3"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Randomized Wheel"
+	        android:text="Randomized Wheel (start from top, move clockwise)"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
 	    
 	    <TextView

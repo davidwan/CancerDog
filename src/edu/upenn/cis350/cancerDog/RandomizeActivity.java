@@ -134,6 +134,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
 		}
+		
 	}
 	
 	public void goToRandomizeView () {
