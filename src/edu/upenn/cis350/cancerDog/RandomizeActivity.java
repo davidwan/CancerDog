@@ -101,9 +101,9 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		int numSamples = sampleNumberPicker.getValue();
 		int numControls = controlNumberPicker.getValue();
 		wheelView.randomize(numSamples, numControls);
-		sampleName.setText("Red: " + "blah");
+		sampleName.setText("Red: ");
 		if (numControls > 0) {
-			controlName.setText("Blue: " + "blah");
+			controlName.setText("Blue: ");
 		}
 		else {
 			controlName.setText("Blue: None");
@@ -128,6 +128,14 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		                String[] temp = getResources().getStringArray(R.array.controls);
 		                controls.add(temp[which]);
 		                saveTrial();
+		                
+		                if (controls.size() > 0) {
+		        			String controlString = controls.get(0);
+		        			for (int i=1; i<controls.size(); i++) {
+		        				controlString += ", " + controls.get(i); 
+		        			}
+		        			controlName.setText("Blue: " + controlString);
+		        		}
 		            }
 		     });
 			AlertDialog tempDialog = temp.create();
@@ -142,11 +150,18 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		                String[] temp = getResources().getStringArray(R.array.experimentals);
 		                experiments.add(temp[which]);
 		                saveTrial();
+		                
+		                String experimentString = experiments.get(0);
+		        		for (int i=1; i<experiments.size(); i++) {
+		        			experimentString += ", " + experiments.get(i); 
+		        		}
+		        		sampleName.setText("Red: " + experimentString);
 		            }
 		     });
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
 		}
+		
 	}
 	
 	@Override
