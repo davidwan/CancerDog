@@ -19,6 +19,7 @@ public class Trial {
 	private String videographer;
 	private String observers;
 	private String time;
+	private String notes;
 	private ArrayList<String[]> trialResults = new ArrayList<String[]>();
 	
 	public static Trial getTrial(int num) {
