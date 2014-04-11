@@ -30,7 +30,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090023;
+        public static final int action_settings=0x7f090024;
         public static final int controlName=0x7f09000f;
         public static final int controlNumberPicker=0x7f09000c;
         public static final int edit=0x7f090002;
@@ -63,6 +63,7 @@ public final class R {
         public static final int textView6=0x7f09001d;
         public static final int textView7=0x7f09001f;
         public static final int textView8=0x7f090021;
+        public static final int textView9=0x7f090023;
         public static final int view=0x7f090001;
         public static final int viewSwitcher=0x7f090004;
         public static final int wheelView=0x7f090010;
