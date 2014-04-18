@@ -12,8 +12,9 @@ public class Trial {
 	public static Context context;
 	private static HashMap<Integer, Trial> cache = new HashMap<Integer, Trial>();
 	private Integer trialNumber;
-	private ArrayList<String> experimentals = new ArrayList<String>();
-	private ArrayList<String> controls = new ArrayList<String>();
+	private int expSlot;
+	private String expName;
+	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
 	private String handler;
 	private String dog;
 	private String videographer;
@@ -21,6 +22,7 @@ public class Trial {
 	private String time;
 	private String notes;
 	private ArrayList<String[]> trialResults = new ArrayList<String[]>();
+	private ArrayList<Integer> rotatedAngles = new ArrayList<Integer>(); 
 	
 	public static Trial getTrial(int num) {
 		if(cache.containsKey(num)) {
@@ -31,28 +33,31 @@ public class Trial {
 		t.setTrialNumber(num);
 		
 		String defaultStr = "Not Given";
-		int numExperimentals = preferences.getInt("numExperimentals", 0);
-		ArrayList<String> experimentals = t.getExperimentals();
-		for(int i=0; i < numExperimentals; i++) {
-			experimentals.add(preferences.getString("experimentals" + i, defaultStr));
-		}
+		t.setExperimentalSlot(preferences.getInt("experimentalSlot", 0));
+		t.setExperimentalName(preferences.getString("experimentalName", defaultStr));
+		
 		int numControls = preferences.getInt("numControls", 0);
-		ArrayList<String> controls = t.getControls();
-		for(int i=0; i < numControls; i++) {
-			controls.add(preferences.getString("controls" + i, defaultStr));
+		for (int i=0; i<numControls; i++) {
+			int slot = preferences.getInt("controlSlot" + i, 0);
+			String name = preferences.getString("controlName" + i, defaultStr);
+			t.addControl(slot, name);
 		}
+		
 		t.setHandler(preferences.getString("handler", defaultStr));
 		t.setDog(preferences.getString("dog", defaultStr));
 		t.setVideographer(preferences.getString("videographer", defaultStr));
 		t.setObservers(preferences.getString("observers", defaultStr));
 		t.setTime(preferences.getString("time", defaultStr));
+		
 		int numResults = preferences.getInt("numResults", 0);
 		for(int i = 0; i < numResults; i++) {
-			String[] result = new String[8];
-			for(int j = 0; j < 8; j++) {
+			String[] result = new String[12];
+			for(int j = 0; j < 12; j++) {
 				result[j] = preferences.getString("results" + i + j, defaultStr);
 			}
-			t.trialResults.add(result);
+			t.addTrialResult(result);
+			int angle = preferences.getInt("rotatedAngle" + i, 0);
+			t.addRotatedAngle(angle);
 		}
 		
 		cache.put(num, t);
@@ -73,7 +78,7 @@ public class Trial {
 		SharedPreferences.Editor editor = mainPreferences.edit();
 		editor.putInt("numTrials", getNumTrials() + 1);
 		editor.commit();
-		return getTrial(++numTrials);
+		return getTrial(numTrials);
 	}
 	
 	public static Trial getCurrentTrial(Context c) {
@@ -84,17 +89,17 @@ public class Trial {
 	public void save() {
 		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		if (experimentals != null) {
-			editor.putInt("numExperimentals", experimentals.size());
-			for(int i=0; i < experimentals.size(); i++) {
-				editor.putString("experimentals" + i, experimentals.get(i));
-			}
-		}
+		
+		editor.putInt("experimentalSlot", expSlot);
+		editor.putString("experimentalName", expName);
 		
 		if (controls != null) {
 			editor.putInt("numControls", controls.size());
-			for(int i=0; i < controls.size(); i++) {
-				editor.putString("controls" + i, controls.get(i));
+			int ind = 0;
+			for(Integer i : controls.keySet()) {
+				editor.putInt("controlSlot" + ind, i);
+				editor.putString("controlName" + ind, controls.get(i));
+				ind++;
 			}
 		}
 		
@@ -108,6 +113,7 @@ public class Trial {
 			for(int j = 0; j < trialResults.get(i).length; j++) {
 				editor.putString("results" + i + j, trialResults.get(i)[j]);
 			}
+			editor.putInt("rotatedAngle" + i, rotatedAngles.get(i));
 		}
 		
 		editor.commit();
@@ -121,19 +127,31 @@ public class Trial {
 		this.trialNumber = preferenceNumber;
 	}
 	
-	public ArrayList<String> getExperimentals() {
-		return experimentals;
+	public int getExperimentalSlot() {
+		return expSlot;
 	}
 	
-	public void setExperimentals(ArrayList<String> e) {
-		experimentals = e;
+	public void setExperimentalSlot(int s) {
+		expSlot = s;
 	}
 	
-	public ArrayList<String> getControls() {
+	public String getExperimentalName() {
+		return expName;
+	}
+	
+	public void setExperimentalName(String n) {
+		expName = n;
+	}
+	
+	public HashMap<Integer, String> getControls() {
 		return controls;
 	}
 	
-	public void setControls(ArrayList<String> c) {
+	public void addControl(int s, String n) {
+		controls.put(s,  n);
+	}
+	
+	public void setControls(HashMap<Integer, String> c) {
 		controls = c;
 	}
 	
@@ -185,14 +203,24 @@ public class Trial {
 		trialResults.add(result);
 	}
 	
+	public ArrayList<Integer> getRotatedAngles() {
+		return rotatedAngles;
+	}
+	
+	public void addRotatedAngle(int a) {
+		rotatedAngles.add(a);
+	}
+	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("trialNumber: " + trialNumber + "\n");
-		for(int i=0; i < experimentals.size(); i++) {
-			s.append("experimentals" + i + ": " + experimentals.get(i) + "\n");
-		}
-		for(int i=0; i < controls.size(); i++) {
-			s.append("controls" + i + ": " + controls.get(i) + "\n");
+		s.append("experimentalSlot: " + expSlot + "\n");
+		s.append("experimentalName: " + expName + "\n");
+		int ind = 0;
+		for(Integer i: controls.keySet()) {
+			s.append("controlSlot" + ind + ": " + i + "\n");
+			s.append("controlName" + ind + ": " + controls.get(i) + "\n");
+			ind++;
 		}
 		s.append("handler: " + handler + "\n");
 		s.append("dog: " + dog + "\n");

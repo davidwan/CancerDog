@@ -2,11 +2,15 @@ package edu.upenn.cis350.cancerDog;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,21 +27,22 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	
 	public static final int ButtonClickActivity_ID = 3;
 	
-	private ViewSwitcher switcher;
-	private WheelView wheelView;
+	// UI elements
 	private NumberPicker sampleNumberPicker, controlNumberPicker;
-	private TextView sampleName, controlName;
-	private int numSamples, numControls;
-	private int numSelectedSamples, numSelectedControls;
+	
+	private int numExperimentals, numControls;
+	private int numSelectedExperimentals, numSelectedControls;
 	private ArrayList<String> experiments;
-	private ArrayList<String> controls;
+	private ArrayList<String> controlNames;
+	
+	private int expSlot;
+	private String expName;
+	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_randomize);
-		
-		switcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 		
 		// Set up pre-randomize spinners
 		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.experimentals, android.R.layout.simple_spinner_item);
@@ -60,10 +65,6 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		controlNumberPicker.setValue(0);
 		sampleNumberPicker.setOnValueChangedListener(this);
 		controlNumberPicker.setOnValueChangedListener(this);
-		
-		sampleName = (TextView) findViewById(R.id.sampleName);
-		controlName = (TextView) findViewById(R.id.controlName);
-		wheelView = (WheelView) findViewById(R.id.wheelView);
 	}
 	
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -72,8 +73,9 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
+		t.setExperimentalSlot(expSlot);
+		t.setExperimentalName(expName);
 		t.setControls(controls);
-		t.setExperimentals(experiments);
 		t.save();
 	}
 	
@@ -88,19 +90,15 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		Intent i = new Intent(this, TrialActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
-	 
-	public void goToPreRandomizeView (View v) {
-		switcher.showPrevious();
-	}
 	
-	public void selectSamplesAndControls (View v) {
-		numSamples = sampleNumberPicker.getValue();
+	public void makeSelections (View v) {
+		numExperimentals = sampleNumberPicker.getValue();
 		numControls = controlNumberPicker.getValue();
 		
 		experiments = new ArrayList<String> ();
-		controls = new ArrayList<String> ();
+		controlNames = new ArrayList<String> ();
 		
-		numSelectedSamples = 0;
+		numSelectedExperimentals = 0;
 		numSelectedControls = 0;
 		
 		for (int i=numControls; i>0; i--) {
@@ -109,26 +107,24 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			temp.setItems(R.array.controls, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
 	                String[] temp = getResources().getStringArray(R.array.controls);
-	                controls.add(temp[which]);
-	                saveTrial();
+	                controlNames.add(temp[which]);
 	                numSelectedControls++;
-	                goToRandomizeView();
+	                randomize();
 	            }
 		     });
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
 		}
 		
-		for (int i=numSamples; i>0; i--) {
+		for (int i=numExperimentals; i>0; i--) {
 			AlertDialog.Builder temp = new AlertDialog.Builder(this);
 			temp.setTitle("Pick experimental for #" + i);
 			temp.setItems(R.array.experimentals, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
 	                String[] temp = getResources().getStringArray(R.array.experimentals);
 	                experiments.add(temp[which]);
-	                saveTrial();
-	                numSelectedSamples++;
-	                goToRandomizeView();
+	                numSelectedExperimentals++;
+	                randomize();
 	            }
 		     });
 			AlertDialog tempDialog = temp.create();
@@ -137,32 +133,26 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		
 	}
 	
-	public void goToRandomizeView () {
-		
-		if (numSelectedSamples == numSamples && numSelectedControls == numControls) {
-			wheelView.randomize(numSamples, numControls);
-			
-			int[] sampleSlots = wheelView.getSampleSlots();
-			StringBuffer sampleText = new StringBuffer();
-			for (int i=0; i<sampleSlots.length; ++i) {
-				sampleText.append("Slot " + sampleSlots[i] + ": " + experiments.get(i) + "\n");
+	public void randomize() {
+		if (numSelectedExperimentals == numExperimentals && numSelectedControls == numControls) {
+			List<Integer> availableCircles = new ArrayList<Integer>();
+			for (int i=0; i<12; ++i) {
+				availableCircles.add(i);
 			}
+			Random random = new Random();
 			
-			int[] controlSlots = wheelView.getControlSlots();
-			StringBuffer controlText = new StringBuffer();
-			if (controlSlots.length == 0) {
-				controlText.append("None");
+			// Get experimental slot
+			int index = random.nextInt(12);  //random index in availableCircles
+			int slot = availableCircles.remove(index);  //index of sample circle
+			expSlot = slot;
+			expName = experiments.get(0);
+			
+			// Set control slots
+			for (int i=0; i<numControls; ++i) {
+				index = random.nextInt(12-numExperimentals-i);
+				slot = availableCircles.remove(index);
+				controls.put(slot, controlNames.get(i));
 			}
-			else {
-				for (int i=0; i<controlSlots.length; ++i) {
-					controlText.append("Slot " + controlSlots[i] + ": " + controls.get(i) + "\n");
-				}
-			}
-			
-			sampleName.setText(sampleName.getText() + sampleText.toString());
-			controlName.setText(controlName.getText() + controlText.toString());
-			
-			switcher.showNext();
 		}
 	}
 	

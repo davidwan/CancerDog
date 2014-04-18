@@ -51,7 +51,7 @@ public class TrialActivity extends Activity{
 	
 	public void onNextButtonClick (View v) {
 		saveTrial();
-		Intent i = new Intent(this, TrialData.class);
+		Intent i = new Intent(this, WheelActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
 

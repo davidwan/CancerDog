@@ -40,8 +40,7 @@ public class TrialData extends Activity {
 		//setContentView(new WheelView(this));
 		saveTrial();
 		finish();
-		Intent i = new Intent(this, TrialData.class);
-		
+		Intent i = new Intent(this, WheelActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
 	
