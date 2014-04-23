@@ -18,10 +18,13 @@ public class WheelView extends View {
 	private int wheelSize = 12;
 	private Paint paint = new Paint();
 	private Paint textPaint = new Paint();
+	private Paint labelPaint = new Paint();
 	protected ShapeDrawable[] cir;
 	
 	private double prevAngle = 0;
 	private double rotatedAngle = 0;
+	private int width = -1;
+	private int height;
 	private float centerX, centerY;
 
 	public WheelView(Context c) {
@@ -60,8 +63,15 @@ public class WheelView extends View {
 		textPaint.setColor(Color.BLACK);
 		textPaint.setTextSize(50);
 		
-		centerX = 350;
-		centerY = 280;
+		labelPaint.setColor(Color.BLACK);
+		labelPaint.setTextSize(60);
+	}
+	
+	private void drawLabels(Canvas canvas) {
+		canvas.drawText("A", 20, 80, labelPaint);
+		canvas.drawText("B", width-80, 80, labelPaint);
+		canvas.drawText("C", width-80, height-20, labelPaint);
+		canvas.drawText("D", 20, height-20, labelPaint);
 	}
 	
 	protected int getRotatedAngle() {
@@ -69,26 +79,35 @@ public class WheelView extends View {
 	}
 	
 	public void onDraw(Canvas canvas) {
+		if (width == -1) {
+			width = this.getWidth();
+			height = this.getHeight();
+			
+			centerX = width/2;
+			centerY = height/2;
+		}
 		
 		for (int i=0; i<6; ++i) {
 			double angle = Math.PI * i / 6 - Math.PI / 2 + rotatedAngle;
-			int startX = (int) (400 + 250 * Math.cos(angle));
-			int startY = (int) (330 + 250 * Math.sin(angle));
-			int endX = (int) (400 + 250 * Math.cos(angle + Math.PI));
-			int endY = (int) (330 + 250 * Math.sin(angle + Math.PI));
+			int startX = (int) (centerX + 250 * Math.cos(angle));
+			int startY = (int) (centerY + 250 * Math.sin(angle));
+			int endX = (int) (centerX + 250 * Math.cos(angle + Math.PI));
+			int endY = (int) (centerY + 250 * Math.sin(angle + Math.PI));
 			canvas.drawLine(startX, startY, endX, endY, paint);
 		}
 		
 		for (int i=0; i<wheelSize; ++i) {
 			double angle = 2 * Math.PI * i / wheelSize - Math.PI / 2 + rotatedAngle;
-			int left = (int) (350 + 250 * Math.cos(angle));
-			int top = (int) (280 + 250 * Math.sin(angle));
+			int left = (int) (centerX - 50 + 250 * Math.cos(angle));
+			int top = (int) (centerY - 50 + 250 * Math.sin(angle));
 			cir[i].setBounds(left, top, left+100, top+100);
 			cir[i].draw(canvas);
-			int x = (int) (385 + 250 * Math.cos(angle));
-			int y = (int) (345 + 250 * Math.sin(angle));
+			int x = (int) (centerX - 15 + 250 * Math.cos(angle));
+			int y = (int) (centerY + 15 + 250 * Math.sin(angle));
 			canvas.drawText("" + (i+1), x, y, textPaint);
 		}
+		
+		drawLabels(canvas);
 	}
 	
 	public boolean onTouchEvent(MotionEvent e) {
