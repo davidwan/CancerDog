@@ -34,4 +34,9 @@
         <item>Success</item>
     </string-array>
 
+    <string-array name="directions">
+        <item>Clockwise</item>
+        <item>Counterclockwise</item>
+    </string-array>
+    
 </resources>

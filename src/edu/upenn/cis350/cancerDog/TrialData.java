@@ -11,7 +11,7 @@ import android.widget.Spinner;
 public class TrialData extends Activity {
 	
 	public static final int ButtonClickActivity_ID = 1;
-	private Spinner[] spinners = new Spinner[8];
+	private Spinner[] spinners = new Spinner[9];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,9 @@ public class TrialData extends Activity {
 			spinners[i] = (Spinner) findViewById(spinnerIds[i]);
 			spinners[i].setAdapter(adapter);
 		}
+		ArrayAdapter <CharSequence> adapter2 = ArrayAdapter.createFromResource(this,R.array.directions, android.R.layout.simple_spinner_item);
+		Spinner s2 = (Spinner) findViewById(R.id.spinner9);
+		s2.setAdapter(adapter2);
 	}
 	
 	private void saveTrial() {
