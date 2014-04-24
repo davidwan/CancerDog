@@ -40,8 +40,7 @@ public class TrialData extends Activity {
 		//setContentView(new WheelView(this));
 		saveTrial();
 		finish();
-		Intent i = new Intent(this, WheelActivity.class);
-		startActivityForResult(i,ButtonClickActivity_ID);
+		System.exit(0);
 	}
 	
 	public void onNewSessionButtonClick (View v) {
@@ -53,7 +52,9 @@ public class TrialData extends Activity {
 	public void onExitButtonClick (View v) {
 		saveTrial();
 		finish();
-        System.exit(0);
+		Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 	}
 
 	@Override

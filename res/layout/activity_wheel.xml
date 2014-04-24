@@ -56,7 +56,7 @@
             android:layout_gravity="left|top"
             android:layout_row="0"
             android:onClick="onExitButtonClick"
-            android:text="Exit" />
+            android:text="Previous" />
 
         <Button
             android:id="@+id/next"
