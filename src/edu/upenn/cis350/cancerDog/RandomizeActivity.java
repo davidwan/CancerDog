@@ -61,7 +61,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		sampleNumberPicker.setValue(1);
 		controlNumberPicker = (NumberPicker) findViewById(R.id.controlNumberPicker);
 		controlNumberPicker.setMinValue(0);
-		controlNumberPicker.setMaxValue(3);
+		controlNumberPicker.setMaxValue(11);
 		controlNumberPicker.setValue(0);
 		sampleNumberPicker.setOnValueChangedListener(this);
 		controlNumberPicker.setOnValueChangedListener(this);

@@ -74,13 +74,15 @@ public final class R {
         public static final int wheelView=0x7f090027;
     }
     public static final class layout {
-        public static final int activity_displaytrial=0x7f030000;
-        public static final int activity_launcher=0x7f030001;
-        public static final int activity_randomize=0x7f030002;
-        public static final int activity_trial=0x7f030003;
-        public static final int activity_trialdata=0x7f030004;
-        public static final int activity_view=0x7f030005;
-        public static final int activity_wheel=0x7f030006;
+        public static final int activity_displayedit=0x7f030000;
+        public static final int activity_displaytrial=0x7f030001;
+        public static final int activity_edit=0x7f030002;
+        public static final int activity_launcher=0x7f030003;
+        public static final int activity_randomize=0x7f030004;
+        public static final int activity_trial=0x7f030005;
+        public static final int activity_trialdata=0x7f030006;
+        public static final int activity_view=0x7f030007;
+        public static final int activity_wheel=0x7f030008;
     }
     public static final class menu {
         public static final int launcher=0x7f080000;

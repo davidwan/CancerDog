@@ -86,6 +86,16 @@ public class Trial {
 		return getTrial(getNumTrials());
 	}
 	
+	public static void edit (int trialNumber, String key, String val) {
+		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		
+		editor.putString(key, val);
+		cache.remove(trialNumber);
+		
+		editor.commit();
+	}
+	
 	public void save() {
 		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
