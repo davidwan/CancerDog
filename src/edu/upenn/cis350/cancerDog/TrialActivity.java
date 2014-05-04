@@ -29,7 +29,15 @@ public class TrialActivity extends Activity{
 		observers = (EditText) findViewById(R.id.editText2);
 		time = (EditText) findViewById(R.id.editText3);
 		Calendar c = Calendar.getInstance();
-		time.setText(c.get(Calendar.HOUR) + ":" +  c.get(Calendar.MINUTE) + (c.get(Calendar.AM_PM)==0 ? "am" : "pm"));
+		String hour = String.valueOf(c.get(Calendar.HOUR));
+		if (hour.length() < 2) {
+			hour = "0" + hour;
+		}
+		String minute = String.valueOf(c.get(Calendar.MINUTE));
+		if (minute.length() < 2) {
+			minute = "0" + minute;
+		}
+		time.setText(hour + ":" +  minute + (c.get(Calendar.AM_PM)==0 ? "am" : "pm"));
 		time.setEnabled(false);
 	}
 	

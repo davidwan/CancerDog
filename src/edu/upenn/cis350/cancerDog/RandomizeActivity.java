@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -34,6 +35,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	private int numSelectedExperimentals, numSelectedControls;
 	private ArrayList<String> experiments;
 	private ArrayList<String> controlNames;
+	private Button nextButton;
 	
 	private int expSlot;
 	private String expName;
@@ -65,10 +67,14 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		controlNumberPicker.setValue(0);
 		sampleNumberPicker.setOnValueChangedListener(this);
 		controlNumberPicker.setOnValueChangedListener(this);
+		nextButton = (Button) findViewById(R.id.next);
+		nextButton.setEnabled(false);
+		
 	}
 	
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        Toast.makeText(this, "change", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "change", Toast.LENGTH_SHORT).show();
+        nextButton.setEnabled(false);
     }
 	
 	private void saveTrial() {
@@ -86,9 +92,15 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	}
 	
 	public void onNextButtonClick (View v) {
-		saveTrial();
-		Intent i = new Intent(this, TrialActivity.class);
-		startActivityForResult(i,ButtonClickActivity_ID);
+		if ((numExperimentals + numControls) != (experiments.size() + controlNames.size())) {
+			Toast.makeText(this, "Each control and experiment must be defined. Try selecting again.", Toast.LENGTH_SHORT).show();
+			nextButton.setEnabled(false);
+		}
+		else {
+			saveTrial();
+			Intent i = new Intent(this, TrialActivity.class);
+			startActivityForResult(i,ButtonClickActivity_ID);
+		}
 	}
 	
 	public void makeSelections (View v) {
@@ -130,7 +142,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
 		}
-		
+		nextButton.setEnabled(true);
 	}
 	
 	public void randomize() {
