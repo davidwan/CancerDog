@@ -20,6 +20,7 @@ public class Trial {
 	private String videographer;
 	private String observers;
 	private String time;
+	private String date;
 	private ArrayList<String> notes = new ArrayList<String> ();
 	private ArrayList<String[]> trialResults = new ArrayList<String[]>();
 	private ArrayList<Integer> rotatedAngles = new ArrayList<Integer>(); 
@@ -48,6 +49,7 @@ public class Trial {
 		t.setVideographer(preferences.getString("videographer", defaultStr));
 		t.setObservers(preferences.getString("observers", defaultStr));
 		t.setTime(preferences.getString("time", defaultStr));
+		t.setDate(preferences.getString("date", defaultStr));
 		
 		int numResults = preferences.getInt("numResults", 0);
 		for(int i = 0; i < numResults; i++) {
@@ -119,6 +121,7 @@ public class Trial {
 		editor.putString("videographer", videographer);
 		editor.putString("observers", observers);
 		editor.putString("time", time);
+		editor.putString("date", date);
 		editor.putInt("numResults", trialResults.size());
 		for(int i = 0; i < trialResults.size(); i++) {
 			for(int j = 0; j < trialResults.get(i).length; j++) {
@@ -195,8 +198,16 @@ public class Trial {
 		return time;
 	}
 	
+	public String getDate() {
+		return date;
+	}
+	
 	public void setTime(String time) {
 		this.time = time;
+	}
+	
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getDog() {
@@ -247,6 +258,7 @@ public class Trial {
 		s.append("videographer: " + videographer + "\n");
 		s.append("observers: " + observers + "\n");
 		s.append("time: " + time + "\n");
+		s.append("date: " + date + "\n");
 		for(int i = 0; i < trialResults.size(); i++) {
 			for(int j = 0; j < trialResults.get(i).length; j++) {
 				s.append("results" + i + j + ": " + trialResults.get(i)[j] + "\n");
