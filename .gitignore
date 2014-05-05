@@ -30,3 +30,5 @@ proguard/
 
 # Cache
 *.cache
+
+R.java
