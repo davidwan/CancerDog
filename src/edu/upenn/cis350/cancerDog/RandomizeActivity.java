@@ -96,6 +96,10 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			Toast.makeText(this, "Each control and experiment must be defined. Try selecting again.", Toast.LENGTH_SHORT).show();
 			nextButton.setEnabled(false);
 		}
+		else if (((numExperimentals + numControls) > 12)) {
+			Toast.makeText(this, "There are only 12 spots on the wheel. Try selecting again.", Toast.LENGTH_SHORT).show();
+			nextButton.setEnabled(false);
+		}
 		else {
 			saveTrial();
 			Intent i = new Intent(this, TrialActivity.class);
@@ -107,42 +111,48 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		numExperimentals = sampleNumberPicker.getValue();
 		numControls = controlNumberPicker.getValue();
 		
-		experiments = new ArrayList<String> ();
-		controlNames = new ArrayList<String> ();
-		
-		numSelectedExperimentals = 0;
-		numSelectedControls = 0;
-		
-		for (int i=numControls; i>0; i--) {
-			AlertDialog.Builder temp = new AlertDialog.Builder(this);
-			temp.setTitle("Pick control for #" + i);
-			temp.setItems(R.array.controls, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-	                String[] temp = getResources().getStringArray(R.array.controls);
-	                controlNames.add(temp[which]);
-	                numSelectedControls++;
-	                randomize();
-	            }
-		     });
-			AlertDialog tempDialog = temp.create();
-			tempDialog.show();
+		if (((numExperimentals + numControls) > 12)) {
+			Toast.makeText(this, "There are only 12 spots on the wheel. Try a different number.", Toast.LENGTH_SHORT).show();
+			nextButton.setEnabled(false);
 		}
-		
-		for (int i=numExperimentals; i>0; i--) {
-			AlertDialog.Builder temp = new AlertDialog.Builder(this);
-			temp.setTitle("Pick experimental for #" + i);
-			temp.setItems(R.array.experimentals, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-	                String[] temp = getResources().getStringArray(R.array.experimentals);
-	                experiments.add(temp[which]);
-	                numSelectedExperimentals++;
-	                randomize();
-	            }
-		     });
-			AlertDialog tempDialog = temp.create();
-			tempDialog.show();
+		else {
+			experiments = new ArrayList<String> ();
+			controlNames = new ArrayList<String> ();
+			
+			numSelectedExperimentals = 0;
+			numSelectedControls = 0;
+			
+			for (int i=numControls; i>0; i--) {
+				AlertDialog.Builder temp = new AlertDialog.Builder(this);
+				temp.setTitle("Pick control for #" + i);
+				temp.setItems(R.array.controls, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+		                String[] temp = getResources().getStringArray(R.array.controls);
+		                controlNames.add(temp[which]);
+		                numSelectedControls++;
+		                randomize();
+		            }
+			     });
+				AlertDialog tempDialog = temp.create();
+				tempDialog.show();
+			}
+			
+			for (int i=numExperimentals; i>0; i--) {
+				AlertDialog.Builder temp = new AlertDialog.Builder(this);
+				temp.setTitle("Pick experimental for #" + i);
+				temp.setItems(R.array.experimentals, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+		                String[] temp = getResources().getStringArray(R.array.experimentals);
+		                experiments.add(temp[which]);
+		                numSelectedExperimentals++;
+		                randomize();
+		            }
+			     });
+				AlertDialog tempDialog = temp.create();
+				tempDialog.show();
+			}
+			nextButton.setEnabled(true);
 		}
-		nextButton.setEnabled(true);
 	}
 	
 	public void randomize() {
