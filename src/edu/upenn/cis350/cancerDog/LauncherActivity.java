@@ -37,6 +37,11 @@ public class LauncherActivity extends Activity {
 		startActivityForResult(i, ButtonClickActivity_ID);
 	}
 	
+	public void onEditDefaultButtonClick(View v) {
+		Intent i = new Intent(this, EditDefaultActivity.class);
+		startActivityForResult(i, ButtonClickActivity_ID);
+	}
+	
 	public void onExitButtonClick (View v) {
 		finish();
         System.exit(1);
