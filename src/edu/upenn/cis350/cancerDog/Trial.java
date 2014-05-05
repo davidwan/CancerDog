@@ -20,7 +20,7 @@ public class Trial {
 	private String videographer;
 	private String observers;
 	private String time;
-	private String notes;
+	private ArrayList<String> notes = new ArrayList<String> ();
 	private ArrayList<String[]> trialResults = new ArrayList<String[]>();
 	private ArrayList<Integer> rotatedAngles = new ArrayList<Integer>(); 
 	
@@ -58,6 +58,7 @@ public class Trial {
 			t.addTrialResult(result);
 			int angle = preferences.getInt("rotatedAngle" + i, 0);
 			t.addRotatedAngle(angle);
+			t.addNotes(defaultStr);
 		}
 		
 		cache.put(num, t);
@@ -124,6 +125,7 @@ public class Trial {
 				editor.putString("results" + i + j, trialResults.get(i)[j]);
 			}
 			editor.putInt("rotatedAngle" + i, rotatedAngles.get(i));
+			editor.putString("notes", notes.get(i));
 		}
 		
 		editor.commit();
@@ -221,6 +223,14 @@ public class Trial {
 		rotatedAngles.add(a);
 	}
 	
+	public ArrayList<String> getNotes () {
+		return notes;
+	}
+	
+	public void addNotes (String n) {
+		notes.add(n);
+	}
+	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("trialNumber: " + trialNumber + "\n");
@@ -241,6 +251,7 @@ public class Trial {
 			for(int j = 0; j < trialResults.get(i).length; j++) {
 				s.append("results" + i + j + ": " + trialResults.get(i)[j] + "\n");
 			}
+			s.append("notes" + i + ":" + notes.get(i) + "\n");
 		}
 		
 		return s.toString();

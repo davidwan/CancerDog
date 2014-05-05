@@ -31,16 +31,17 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090028;
-        public static final int controlLabel=0x7f090026;
+        public static final int action_settings=0x7f090029;
+        public static final int controlLabel=0x7f090027;
         public static final int controlNumberPicker=0x7f09000c;
         public static final int edit=0x7f090002;
+        public static final int editNotes=0x7f090024;
         public static final int editText0=0x7f090011;
         public static final int editText1=0x7f090013;
         public static final int editText2=0x7f090015;
         public static final int editText3=0x7f090017;
         public static final int exit=0x7f090004;
-        public static final int experimentalLabel=0x7f090025;
+        public static final int experimentalLabel=0x7f090026;
         public static final int export=0x7f090003;
         public static final int launch=0x7f090000;
         public static final int next=0x7f09000a;
@@ -68,10 +69,10 @@ public final class R {
         public static final int textView6=0x7f090016;
         public static final int textView7=0x7f09001f;
         public static final int textView8=0x7f090021;
-        public static final int textView9=0x7f090024;
+        public static final int textView9=0x7f090025;
         public static final int view=0x7f090001;
         public static final int viewSwitcher=0x7f090005;
-        public static final int wheelView=0x7f090027;
+        public static final int wheelView=0x7f090028;
     }
     public static final class layout {
         public static final int activity_displayedit=0x7f030000;
