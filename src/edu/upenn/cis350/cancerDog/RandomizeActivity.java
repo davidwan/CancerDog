@@ -82,7 +82,6 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		t.setExperimentalSlot(expSlot);
 		t.setExperimentalName(expName);
 		t.setControls(controls);
-		t.save();
 	}
 	
 	public void onExitButtonClick (View v) {

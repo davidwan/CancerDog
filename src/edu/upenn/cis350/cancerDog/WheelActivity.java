@@ -51,7 +51,6 @@ public class WheelActivity extends Activity {
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
 		t.addRotatedAngle(wheelView.getRotatedAngle());
-		t.save();
 	}
 	
 	public void onExitButtonClick (View v) {

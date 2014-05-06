@@ -48,7 +48,6 @@ public class TrialActivity extends Activity{
 		t.setVideographer(videographer.getText().toString());
 		t.setObservers(observers.getText().toString());
 		t.setHandler((String) handler.getSelectedItem());
-		t.save();
 	}
 	
 	public void onExitButtonClick (View v) {
