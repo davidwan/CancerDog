@@ -135,18 +135,28 @@ public class Trial {
 		return trial;
 	}
 
-	public static void edit(int trialNumber, String key, String val) {
+	public static void edit(int sessionNumber, String key, String val) {
 		SharedPreferences preferences = context.getSharedPreferences(
-				"edu.upenn.cis350.cancerDog.trial" + trialNumber,
+				"edu.upenn.cis350.cancerDog.trial" + sessionNumber,
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-
-		editor.putString(key, val);
-		cache.remove(trialNumber);
+		
+		if (key.contains("topArm")) {
+			try {
+				editor.putInt(key, Integer.parseInt(val));
+			} catch (NumberFormatException e) {
+				
+			}
+		}
+		else {
+			editor.putString(key, val);
+		}
+		
+		cache.remove(sessionNumber);
 
 		editor.commit();
 
-		HashMap<String, Object> trial = getTrial(trialNumber).toHashMap();
+		HashMap<String, Object> trial = getTrial(sessionNumber).toHashMap();
 		trial.put("edit", true);
 		PostJson task = new PostJson();
 		task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
@@ -198,7 +208,6 @@ public class Trial {
 			PostJson task = new PostJson();
 			task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
 		}
-
 	}
 
 	public Integer getTrialNumber() {
@@ -316,20 +325,21 @@ public class Trial {
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		s.append("sessionNumber: " + (sessionNumber + 1) + "\n");
-		s.append("experimentalSlot: " + expSlot + "\n");
-		s.append("experimentalName: " + expName + "\n");
-		int ind = 0;
-		for (Integer i : controls.keySet()) {
-			s.append("controlSlot[" + ind + "]: " + i + "\n");
-			s.append("controlName[" + ind + "]: " + controls.get(i) + "\n");
-			ind++;
-		}
+		s.append("date: " + date + "\n");
+		s.append("time: " + time + "\n");
 		s.append("handler: " + handler + "\n");
 		s.append("dog: " + dog + "\n");
 		s.append("videographer: " + videographer + "\n");
 		s.append("observers: " + observers + "\n");
-		s.append("time: " + time + "\n");
-		s.append("date: " + date + "\n");
+		s.append("experimentalName: " + expName + "\n");
+		s.append("experimentalSlot: " + expSlot + "\n");
+		int ind = 0;
+		for (Integer i : controls.keySet()) {
+			s.append("controlName[" + ind + "]: " + controls.get(i) + "\n");
+			s.append("controlSlot[" + ind + "]: " + i + "\n");
+			ind++;
+		}
+		
 		for (int i = 0; i < trialResults.size(); i++) {
 			s.append("topArm[" + i + "]: " + topArms.get(i) + "\n");
 			for (int j = 0; j < trialResults.get(i).length; j++) {

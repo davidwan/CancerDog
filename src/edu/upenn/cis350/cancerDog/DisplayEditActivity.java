@@ -25,15 +25,12 @@ public class DisplayEditActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
 		Trial.context = this;
-		trialNum = extras.getInt("trialNum");
+		trialNum = extras.getInt("sessionNumber");
 		String[] trialData = Trial.getTrial(trialNum).toString().split("\n");
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.activity_displayedit, trialData));
  
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
-
-		
-		
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -42,8 +39,8 @@ public class DisplayEditActivity extends ListActivity {
 				String edit = ((TextView) view).getText().toString();
 				key = edit.split(":")[0];
 				
-				if (!key.equals("trialNumber") && !key.equals("experimentalSlot")) {
-					Toast.makeText(DisplayEditActivity.this, edit, Toast.LENGTH_SHORT).show();
+				if (!key.equals("sessionNumber") && !key.equals("experimentalSlot") && !key.contains("controlSlot") && !key.equals("experimentalSlot") && !key.equals("time") && !key.equals("date")) {
+					Toast.makeText(DisplayEditActivity.this, key, Toast.LENGTH_SHORT).show();
 				    
 				    final EditText input = new EditText(DisplayEditActivity.this);
 				    

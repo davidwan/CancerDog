@@ -111,6 +111,7 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	public void makeSelections (View v) {
 		numControls = controlNumberPicker.getValue();
 		controlNames = new ArrayList<String> ();
+		controls = new HashMap<Integer,String> ();
 		numSelectedControls = 0;
 		CharSequence[] controlsSequence = controlsArray.toArray(new CharSequence[controlsArray.size()]);
 
