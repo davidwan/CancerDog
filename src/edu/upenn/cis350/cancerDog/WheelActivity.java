@@ -56,22 +56,24 @@ public class WheelActivity extends Activity {
 	
 	private void saveWheel() {
 		Trial t = Trial.getCurrentTrial(this);
-		t.addRotatedAngle(wheel.getRotatedAngle());
-		t.save();
+		t.addTopArm(wheel.getTopArm());
+		t.save(false);
 	}
 	
-	private void saveTrial() {
+	private void saveTrial(boolean doneWithSession) {
 		Trial t = Trial.getCurrentTrial(this);
 		
-//		notes = "";
-//		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
-		t.addTrialResult(results);
-		t.addNotes("");
-		t.save();
+		if (!(doneWithSession && !wheel.isFixed())) {
+	//		notes = "";
+	//		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
+			t.addTrialResult(results);
+			t.addNotes("");
+		}
+		t.save(doneWithSession);
 	}
 	
 	public void endSession (View v) {
-		saveTrial();
+		saveTrial(true);
 		finish();
         Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -86,7 +88,7 @@ public class WheelActivity extends Activity {
 	}
 	
 	public void onNextButtonClick (View v) {
-		saveTrial();
+		saveTrial(false);
 		for (int i=0; i<12; ++i) {
 			results[i].reset();
 		}
@@ -135,11 +137,6 @@ public class WheelActivity extends Activity {
 		});
 		
 		AlertDialog tempDialog = temp.create();
-		tempDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-			public void onDismiss(DialogInterface dialog) {
-				writeResult();
-			}
-		});
 		tempDialog.show();
 	}
 	

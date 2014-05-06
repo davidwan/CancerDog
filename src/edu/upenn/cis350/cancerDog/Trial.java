@@ -5,13 +5,14 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 public class Trial {
 	private static Integer numTrials;
 	public static Context context;
 	private static HashMap<Integer, Trial> cache = new HashMap<Integer, Trial>();
-	private Integer trialNumber;
+	private Integer sessionNumber;
 	private int expSlot;
 	private String expName;
 	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
@@ -23,7 +24,7 @@ public class Trial {
 	private String date;
 	private ArrayList<String> notes = new ArrayList<String> ();
 	private ArrayList<Result[]> trialResults = new ArrayList<Result[]>();
-	private ArrayList<Integer> rotatedAngles = new ArrayList<Integer>(); 
+	private ArrayList<Integer> topArms = new ArrayList<Integer>(); // the arms that are on the top in trials
 	
 	public static Trial getTrial(int num) {
 		if(cache.containsKey(num)) {
@@ -61,20 +62,20 @@ public class Trial {
 					String[] tokens = r.split(" ");
 					if (tokens.length == 3) {
 						if (tokens[0].startsWith("Miss")) {
-							result[j].numMiss = Integer.parseInt(r.substring(4));
+							result[j].numMiss = Integer.parseInt(tokens[0].substring(4));
 						}
 						if (tokens[1].startsWith("False")) {
-							result[j].numFalse = Integer.parseInt(r.substring(5));
+							result[j].numFalse = Integer.parseInt(tokens[1].substring(5));
 						}
 						if (tokens[2].startsWith("Success")) {
-							result[j].numSuccess = Integer.parseInt(r.substring(7));
+							result[j].numSuccess = Integer.parseInt(tokens[2].substring(7));
 						}
 					}
 				}
 			}
 			t.addTrialResult(result);
-			int angle = preferences.getInt("rotatedAngle" + i, 0);
-			t.addRotatedAngle(angle);
+			int angle = preferences.getInt("topArm" + i, 0);
+			t.addTopArm(angle);
 			t.addNotes(defaultStr);
 		}
 		
@@ -92,10 +93,6 @@ public class Trial {
 	}
 	
 	public static Trial getNewTrial() {
-		SharedPreferences mainPreferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = mainPreferences.edit();
-		editor.putInt("numTrials", getNumTrials() + 1);
-		editor.commit();
 		return getTrial(numTrials);
 	}
 	
@@ -114,9 +111,17 @@ public class Trial {
 		editor.commit();
 	}
 	
-	public void save() {
-		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
+	public void save(boolean doneWithTrial) {
+		Log.i("GRTTrial", "Saving");
+		if(doneWithTrial) {
+			SharedPreferences mainPreferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = mainPreferences.edit();
+			editor.putInt("numTrials", getNumTrials() + 1);
+			numTrials += 1;
+			editor.commit();
+		}
+		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+sessionNumber, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
 		
 		editor.putInt("experimentalSlot", expSlot);
 		editor.putString("experimentalName", expName);
@@ -144,7 +149,7 @@ public class Trial {
 				editor.putString("results" + i + j, "Miss" + r.numMiss
 						+ " False" + r.numFalse + " Success" + r.numSuccess);
 			}
-			editor.putInt("rotatedAngle" + i, rotatedAngles.get(i));
+			editor.putInt("topArm" + i, topArms.get(i));
 			//editor.putString("notes", notes.get(i));
 		}
 		
@@ -152,11 +157,11 @@ public class Trial {
 	}
 	
 	public Integer getTrialNumber() {
-		return trialNumber;
+		return sessionNumber;
 	}
 	
 	public void setTrialNumber(Integer preferenceNumber) {
-		this.trialNumber = preferenceNumber;
+		this.sessionNumber = preferenceNumber;
 	}
 	
 	public int getExperimentalSlot() {
@@ -240,15 +245,19 @@ public class Trial {
 	}
 	
 	public void addTrialResult(Result[] result) {
-		trialResults.add(result);
+		Result[] copy = new Result[result.length];
+		for (int i=0; i<result.length; ++i) {
+			copy[i] = new Result(result[i]);
+		}
+		trialResults.add(copy);
 	}
 	
-	public ArrayList<Integer> getRotatedAngles() {
-		return rotatedAngles;
+	public ArrayList<Integer> getTopArms() {
+		return topArms;
 	}
 	
-	public void addRotatedAngle(int a) {
-		rotatedAngles.add(a);
+	public void addTopArm(int a) {
+		topArms.add(a);
 	}
 	
 	public ArrayList<String> getNotes () {
@@ -261,26 +270,28 @@ public class Trial {
 	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
-		s.append("trialNumber: " + trialNumber + "\n");
-		s.append("experimentalSlot: " + expSlot + "\n");
-		s.append("experimentalName: " + expName + "\n");
-		int ind = 0;
+		s.append("Session Number: " + (sessionNumber + 1) + "\n");
+		s.append("Experimental Slot: " + expSlot + "\n");
+		s.append("Experimental Name: " + expName + "\n");
 		for(Integer i: controls.keySet()) {
-			s.append("controlSlot" + ind + ": " + i + "\n");
-			s.append("controlName" + ind + ": " + controls.get(i) + "\n");
-			ind++;
+			s.append("Control Slot"  + ": " + i + "\n");
+			s.append("Control Name"  + ": " + controls.get(i) + "\n");
 		}
-		s.append("handler: " + handler + "\n");
-		s.append("dog: " + dog + "\n");
-		s.append("videographer: " + videographer + "\n");
-		s.append("observers: " + observers + "\n");
-		s.append("time: " + time + "\n");
-		s.append("date: " + date + "\n");
+		s.append("Handler: " + handler + "\n");
+		s.append("Dog: " + dog + "\n");
+		s.append("Videographer: " + videographer + "\n");
+		s.append("Observers: " + observers + "\n");
+		s.append("Time: " + time + "\n");
+		s.append("Date: " + date + "\n");
 		for(int i = 0; i < trialResults.size(); i++) {
+			s.append("Trial Number: " + (i + 1) + "\n");
+			s.append("Arm on top: " + topArms.get(i) + "\n");
 			for(int j = 0; j < trialResults.get(i).length; j++) {
-				s.append("results" + i + j + ": " + trialResults.get(i)[j] + "\n");
+				Result r = trialResults.get(i)[j];
+				s.append("Slot #" + (j + 1) + " Result: " + "Miss" + r.numMiss
+						+ "   False" + r.numFalse + "   Success" + r.numSuccess + "\n");
 			}
-			s.append("notes" + i + ":" + notes.get(i) + "\n");
+			s.append("Notes for Trial " + (i + 1) + ": " + notes.get(i) + "\n");
 		}
 		
 		return s.toString();

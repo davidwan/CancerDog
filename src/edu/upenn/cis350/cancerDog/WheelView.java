@@ -52,7 +52,7 @@ public class WheelView extends View {
 			cir[i].getPaint().setColor(Color.BLUE);
 		}
 		
-		ArrayList<Integer> angles = t.getRotatedAngles();
+		ArrayList<Integer> angles = t.getTopArms();
 		if (angles.isEmpty()) {
 			rotatedAngle = 0;
 		}
@@ -60,13 +60,13 @@ public class WheelView extends View {
 			rotatedAngle = angles.get(angles.size()-1) * Math.PI / 180;
 		}
 		
-		paint.setColor(Color.BLACK);	
+		paint.setColor(Color.WHITE);	
 		paint.setStrokeWidth(10);
 		
 		textPaint.setColor(Color.BLACK);
 		textPaint.setTextSize(50);
 		
-		labelPaint.setColor(Color.BLACK);
+		labelPaint.setColor(Color.WHITE);
 		labelPaint.setTextSize(60);
 	}
 	
@@ -78,6 +78,10 @@ public class WheelView extends View {
 		fixed = false;
 	}
 	
+	protected boolean isFixed() {
+		return fixed;
+	}
+	
 	private void drawLabels(Canvas canvas) {
 		canvas.drawText("A", centerX-20, 80, labelPaint);
 		canvas.drawText("B", width-80, centerY+30, labelPaint);
@@ -85,8 +89,12 @@ public class WheelView extends View {
 		canvas.drawText("D", 50, centerY+30, labelPaint);
 	}
 	
-	protected int getRotatedAngle() {
-		return ((int)(rotatedAngle * 180 / Math.PI)) % 360;
+	protected int getTopArm() {
+		int deg = ((int)(rotatedAngle * 180 / Math.PI)) % 360;
+		if (deg < 0) {
+			deg += 360;
+		}
+		return (13 - Math.round(deg / 30)) % 12;
 	}
 	
 	public void onDraw(Canvas canvas) {

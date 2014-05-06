@@ -3,6 +3,7 @@ package edu.upenn.cis350.cancerDog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -31,7 +32,7 @@ public class TrialData extends Activity {
 		s2.setAdapter(adapter2);
 	}
 	
-	private void saveTrial() {
+	private void saveTrial(boolean doneWithTrial) {
 		Trial t = Trial.getCurrentTrial(this);
 		String[] trialResults = new String[8];
 		for(int i = 0; i < trialResults.length; i++) {
@@ -41,24 +42,24 @@ public class TrialData extends Activity {
 		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
 		//t.addTrialResult(trialResults);
 		t.addNotes(notes);
-		t.save();
+		t.save(doneWithTrial);
 	}
 	
 	public void onNextButtonClick (View v) {
-		//setContentView(new WheelView(this));
-		saveTrial();
+		Log.i("GRTTrial", "here in next");
+		saveTrial(false);
 		finish();
 		System.exit(0);
 	}
 	
 	public void onNewSessionButtonClick (View v) {
-		saveTrial();
+		saveTrial(false);
 		Intent i = new Intent(this, LauncherActivity.class);
 		startActivityForResult(i,ButtonClickActivity_ID);
 	}
 	
 	public void onExitButtonClick (View v) {
-		saveTrial();
+		saveTrial(true);
 		finish();
 		Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

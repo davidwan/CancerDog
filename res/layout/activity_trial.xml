@@ -53,18 +53,13 @@
         android:text="Dog"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
-    <EditText
-        android:id="@+id/editText0"
-        android:layout_width="133dp"
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
-        android:layout_row="2"
-        android:maxLines="1"
-        android:singleLine="true"
-    	android:lines="1"
-    	android:ellipsize="end"
-        android:ems="10" >
-    </EditText>
+        android:layout_row="2" />
     
     <TextView
         android:id="@+id/textView4"
@@ -86,6 +81,7 @@
         android:singleLine="true"
     	android:lines="1"
     	android:ellipsize="end"
+    	android:inputType="textCapSentences"
         android:ems="10" >
     </EditText>
     
@@ -109,6 +105,7 @@
         android:singleLine="true"
     	android:lines="1"
     	android:ellipsize="end"
+    	android:inputType="textCapSentences"
         android:ems="10" >
     </EditText>
     

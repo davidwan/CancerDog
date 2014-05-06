@@ -20,10 +20,12 @@ public class EditActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(Trial.getNumTrials() == 0)
+			return;
 		Trial.context = this;
-		String[] trials = new String[Trial.getNumTrials() + 1];
+		String[] trials = new String[Trial.getNumTrials()];
 		for(int i = 0; i < trials.length; i++) {
-			trials[i] = "Trial " + (i + 1);
+			trials[i] = "Session " + (i + 1);
 		}
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.activity_edit, trials));
  

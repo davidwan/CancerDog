@@ -36,7 +36,7 @@
     
     <Spinner
         android:id="@+id/handlerSpinner"
-        android:layout_width="110dp"
+        android:layout_width="200dp"
         android:layout_height="38dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
@@ -54,7 +54,7 @@
     
     <Spinner
         android:id="@+id/dogSpinner"
-        android:layout_width="110dp"
+        android:layout_width="200dp"
         android:layout_height="38dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
@@ -72,7 +72,7 @@
     
     <Spinner
         android:id="@+id/experimentalSpinner"
-        android:layout_width="110dp"
+        android:layout_width="200dp"
         android:layout_height="38dp"
         android:layout_column="0"
         android:layout_gravity="right|top"
@@ -90,7 +90,7 @@
     
     <Spinner
         android:id="@+id/controlSpinner"
-        android:layout_width="110dp"
+        android:layout_width="200dp"
         android:layout_height="38dp"
         android:layout_column="0"
         android:layout_gravity="right|top"

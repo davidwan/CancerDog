@@ -10,6 +10,12 @@ public class Result {
 		reset();
 	}
 	
+	public Result(Result r) {
+		numMiss = r.numMiss;
+		numFalse = r.numFalse;
+		numSuccess = r.numSuccess;
+	}
+	
 	void reset() {
 		numMiss = 0;
 		numFalse = 0;
