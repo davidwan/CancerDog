@@ -130,7 +130,7 @@ public class EditDefaultActivity extends Activity{
 			set.add(which,true);
 		}
 		else {
-			Toast.makeText(EditDefaultActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(EditDefaultActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
 			if (position != 0) {
 				if (position <= list.size()) {
 					deletePrompt(list, position-1, 0);
