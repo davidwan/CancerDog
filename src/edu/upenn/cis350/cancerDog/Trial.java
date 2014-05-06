@@ -354,7 +354,9 @@ public class Trial {
 		
 		for (int i = 0; i < trialResults.size(); i++) {
 			s.append("topArm[" + i + "]: " + topArms.get(i) + "\n");
-			s.append("direction[" + i + "]:" + directions.get(i) + "\n");
+			if(i < directions.size()) {
+				s.append("direction[" + i + "]:" + directions.get(i) + "\n");
+			}
 			for (int j = 0; j < trialResults.get(i).length; j++) {
 				Result r = trialResults.get(i)[j];
 				s.append("results[" + i + "][" + j + "]: " + " Result: " + "Miss"
