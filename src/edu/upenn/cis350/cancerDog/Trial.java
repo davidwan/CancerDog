@@ -62,7 +62,7 @@ public class Trial {
 		int numControls = preferences.getInt("numControls", 0);
 		for (int i = 0; i < numControls; i++) {
 			int slot = preferences.getInt("controlSlot[" + i + "]", 0);
-			String name = preferences.getString("controlName[" + i + "}",
+			String name = preferences.getString("controlName[" + i + "]",
 					defaultStr);
 			t.addControl(slot, name);
 		}
