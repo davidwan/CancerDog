@@ -38,8 +38,8 @@ public class EditActivity extends ListActivity {
 			    // When clicked, show a toast with the TextView text
 			    int trialNum = Integer.parseInt(((TextView) view).getText().toString().split(" ")[1]) - 1;
 				Intent i = new Intent(parent.getContext(), DisplayEditActivity.class);
-				i.putExtra("trialNum", trialNum);
-				startActivityForResult(i,1);
+				i.putExtra("sessionNumber", trialNum);
+				startActivityForResult(i, 1);
 			}
 		});
 	}
