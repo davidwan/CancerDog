@@ -77,10 +77,6 @@ public class Trial {
 	}
 	
 	public static Trial getNewTrial() {
-		SharedPreferences mainPreferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = mainPreferences.edit();
-		editor.putInt("numTrials", getNumTrials() + 1);
-		editor.commit();
 		return getTrial(numTrials);
 	}
 	
@@ -100,8 +96,14 @@ public class Trial {
 	}
 	
 	public void save() {
+		Log.i("GRTTrial", "Saving");
+		SharedPreferences mainPreferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = mainPreferences.edit();
+		editor.putInt("numTrials", getNumTrials() + 1);
+		numTrials += 1;
+		editor.commit();
 		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = preferences.edit();
+		editor = preferences.edit();
 		
 		editor.putInt("experimentalSlot", expSlot);
 		editor.putString("experimentalName", expName);

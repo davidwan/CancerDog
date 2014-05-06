@@ -78,7 +78,6 @@ public class TrialActivity extends Activity{
 		t.setObservers(observers.getText().toString());
 		t.setHandler((String) handler.getSelectedItem());
 		t.setDate(date.getText().toString());
-		t.save();
 	}
 	
 	public void onExitButtonClick (View v) {
