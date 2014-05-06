@@ -12,7 +12,7 @@ public class Trial {
 	private static Integer numTrials;
 	public static Context context;
 	private static HashMap<Integer, Trial> cache = new HashMap<Integer, Trial>();
-	private Integer trialNumber;
+	private Integer sessionNumber;
 	private int expSlot;
 	private String expName;
 	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
@@ -105,7 +105,7 @@ public class Trial {
 			numTrials += 1;
 			editor.commit();
 		}
-		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+sessionNumber, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		
 		editor.putInt("experimentalSlot", expSlot);
@@ -140,11 +140,11 @@ public class Trial {
 	}
 	
 	public Integer getTrialNumber() {
-		return trialNumber;
+		return sessionNumber;
 	}
 	
 	public void setTrialNumber(Integer preferenceNumber) {
-		this.trialNumber = preferenceNumber;
+		this.sessionNumber = preferenceNumber;
 	}
 	
 	public int getExperimentalSlot() {
@@ -249,26 +249,27 @@ public class Trial {
 	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
-		s.append("trialNumber: " + trialNumber + "\n");
-		s.append("experimentalSlot: " + expSlot + "\n");
-		s.append("experimentalName: " + expName + "\n");
+		s.append("Session Number: " + (sessionNumber + 1) + "\n");
+		s.append("Experimental Slot: " + expSlot + "\n");
+		s.append("Experimental Name: " + expName + "\n");
 		int ind = 0;
 		for(Integer i: controls.keySet()) {
-			s.append("controlSlot" + ind + ": " + i + "\n");
-			s.append("controlName" + ind + ": " + controls.get(i) + "\n");
+			s.append("Control Slot"  + ": " + i + "\n");
+			s.append("Control Name"  + ": " + controls.get(i) + "\n");
 			ind++;
 		}
-		s.append("handler: " + handler + "\n");
-		s.append("dog: " + dog + "\n");
-		s.append("videographer: " + videographer + "\n");
-		s.append("observers: " + observers + "\n");
-		s.append("time: " + time + "\n");
-		s.append("date: " + date + "\n");
+		s.append("Handler: " + handler + "\n");
+		s.append("Dog: " + dog + "\n");
+		s.append("Videographer: " + videographer + "\n");
+		s.append("Observers: " + observers + "\n");
+		s.append("Time: " + time + "\n");
+		s.append("Date: " + date + "\n");
 		for(int i = 0; i < trialResults.size(); i++) {
+			s.append("Trial Number: " + (i + 1) + "\n");
 			for(int j = 0; j < trialResults.get(i).length; j++) {
-				s.append("results" + i + j + ": " + trialResults.get(i)[j] + "\n");
+				s.append("Slot #" + (j + 1) + " Result: " + trialResults.get(i)[j] + "\n");
 			}
-			s.append("notes" + i + ":" + notes.get(i) + "\n");
+			s.append("Notes for Trial " + (i + 1) + ": " + notes.get(i) + "\n");
 		}
 		
 		return s.toString();
