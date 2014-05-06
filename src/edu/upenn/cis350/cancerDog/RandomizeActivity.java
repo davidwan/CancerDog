@@ -90,11 +90,16 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	}
 
 	public void onNextButtonClick (View v) {
-		if (controlNames.size() < numControls) {
+		if (expSpinner.getSelectedItem() == null) {
+			Toast.makeText(this, "There can't be zero experiments or controls. Maybe try adding some from the main menu.", Toast.LENGTH_SHORT).show();
+			nextButton.setEnabled(false);
+		}
+		else if (controlNames.size() < numControls) {
 			Toast.makeText(this, "Each control and experiment must be defined. Try selecting again.", Toast.LENGTH_SHORT).show();
 			nextButton.setEnabled(false);
 		}
 		else {
+			randomize();
 			saveTrial();
 			Intent i = new Intent(this, TrialActivity.class);
 			startActivityForResult(i,ButtonClickActivity_ID);
@@ -116,12 +121,14 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
                 public void onClick(DialogInterface dialog, int which) {
                 	controlNames.add(controlsArray.get(which));
 	                numSelectedControls++;
-	                randomize();
+	                //randomize();
 	            }
 		     });
 			AlertDialog tempDialog = temp.create();
 			tempDialog.show();
 		}
+		
+		nextButton.setEnabled(true);
 	}
 
 	public void randomize() {
@@ -144,7 +151,6 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 				slot = availableCircles.remove(index);
 				controls.put(slot, controlNames.get(i));
 			}
-			nextButton.setEnabled(true);
 		}
 	}
 
