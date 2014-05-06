@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class Trial {
 	private static Integer numTrials;
@@ -114,12 +113,9 @@ public class Trial {
 	}
 
 	public static int getNumTrials() {
-		Log.i("GRTTrial", "In num trials");
 		if (numTrials == null) {
-			Log.i("GRTTrial", "In if null");
 			SharedPreferences mainPreferences = context.getSharedPreferences(
 					"edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
-			Log.i("GRTTrial", "context is not null");
 			numTrials = mainPreferences.getInt("numTrials", 0);
 		}
 		return numTrials;
@@ -182,9 +178,6 @@ public class Trial {
 	}
 
 	public void save(boolean doneWithTrial, boolean post) {
-		if(context == null) {
-			Log.i("GRTTrial", "Context is null");
-		}
 		SharedPreferences preferences = context.getSharedPreferences(
 				"edu.upenn.cis350.cancerDog.trial" + sessionNumber,
 				Context.MODE_PRIVATE);
@@ -412,7 +405,6 @@ public class Trial {
 				httpPost.setHeader("Accept", "application/json");
 				httpPost.setHeader("Content-type", "application/json");
 				new DefaultHttpClient().execute(httpPost);
-				Log.i("GRTTrial", "Posted");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (ClientProtocolException e) {
@@ -435,8 +427,6 @@ public class Trial {
 						.execute(httpGet);
 				HttpEntity entity = response.getEntity();
 				String csv = EntityUtils.toString(entity, "UTF-8");
-				Log.i("GRTTrial", "Response: " + csv);
-				Log.i("GRTTrial", response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
 				String[] lines = csv.split("\n");
 				for (int i = 1; i < lines.length; i++) {
 					Trial t = new Trial();

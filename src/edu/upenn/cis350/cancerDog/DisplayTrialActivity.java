@@ -1,11 +1,8 @@
 package edu.upenn.cis350.cancerDog;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 public class DisplayTrialActivity extends ListActivity {
