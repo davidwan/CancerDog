@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class TrialData extends Activity {
 	
 	public static final int ButtonClickActivity_ID = 1;
 	private Spinner[] spinners = new Spinner[9];
+	private String notes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,10 @@ public class TrialData extends Activity {
 		for(int i = 0; i < trialResults.length; i++) {
 			trialResults[i] = spinners[i].getSelectedItem().toString();
 		}
+		notes = "";
+		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
 		t.addTrialResult(trialResults);
+		t.addNotes(notes);
 		t.save();
 	}
 	

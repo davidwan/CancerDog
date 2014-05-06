@@ -13,7 +13,7 @@ import android.widget.Spinner;
 
 public class TrialActivity extends Activity{
 	public static final int ButtonClickActivity_ID = 2;
-	private EditText time, videographer, observers, dog;
+	private EditText time, videographer, observers, dog, date;
 	private Spinner handler;
 
 	@Override
@@ -27,8 +27,22 @@ public class TrialActivity extends Activity{
 		dog = (EditText) findViewById(R.id.editText0);
 		videographer = (EditText) findViewById(R.id.editText1);
 		observers = (EditText) findViewById(R.id.editText2);
-		time = (EditText) findViewById(R.id.editText3);
+		
+		
+		date = (EditText) findViewById(R.id.editText3);
 		Calendar c = Calendar.getInstance();
+		String month = String.valueOf(c.get(Calendar.MONTH) + 1);
+		if (month.length() < 2) {
+			month = "0" + month;
+		}
+		String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+		if (day.length() < 2) {
+			day = "0" + day;
+		}
+		date.setText(month + "/" +  day + "/" + c.get(Calendar.YEAR));
+		date.setEnabled(false);
+		
+		time = (EditText) findViewById(R.id.editText4);
 		String hour = String.valueOf(c.get(Calendar.HOUR));
 		if (hour.length() < 2) {
 			hour = "0" + hour;
@@ -48,6 +62,7 @@ public class TrialActivity extends Activity{
 		t.setVideographer(videographer.getText().toString());
 		t.setObservers(observers.getText().toString());
 		t.setHandler((String) handler.getSelectedItem());
+		t.setDate(date.getText().toString());
 	}
 	
 	public void onExitButtonClick (View v) {

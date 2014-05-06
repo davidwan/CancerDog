@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<RandomizeActivity>{
 	private RandomizeActivity rAct;
-	private NumberPicker mPicker1;
-	private NumberPicker mPicker2;
+	private Spinner mSpinner;
+	private NumberPicker mPicker;
 	private TextView label1;
 	private TextView label2;
 	
@@ -22,16 +22,16 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
 	protected void setUp() throws Exception {
         super.setUp();
         rAct = getActivity();
-        mPicker1 =(NumberPicker) rAct.findViewById(R.id.sampleNumberPicker);
-        mPicker2 =(NumberPicker) rAct.findViewById(R.id.controlNumberPicker);
+        mSpinner =(Spinner) rAct.findViewById(R.id.spinner);
+        mPicker =(NumberPicker) rAct.findViewById(R.id.controlNumberPicker);
         label1 = (TextView) rAct.findViewById(R.id.textView1);
         label2 = (TextView) rAct.findViewById(R.id.textView2);
     }
 	
 	public void testPreconditions() {
 	    assertNotNull(rAct);
-	    assertNotNull(mPicker1);
-	    assertNotNull(mPicker2);
+	    assertNotNull(mSpinner);
+	    assertNotNull(mPicker);
 	}
 	
 	public void testTextView1_labelText() {

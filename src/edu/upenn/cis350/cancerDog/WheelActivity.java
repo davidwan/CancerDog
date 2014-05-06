@@ -29,10 +29,6 @@ public class WheelActivity extends Activity {
 	// UI elements
 	private TextView expLabel, controlLabel;
 	private WheelView wheelView;
-	
-	private int expSlot;
-	private String expName;
-	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +63,7 @@ public class WheelActivity extends Activity {
 	
 	public void setupLabels(Trial t) {
 		StringBuffer expText = new StringBuffer();
-		expText.append("Slot: " + t.getExperimentalSlot() + "\n");
+		expText.append("Slot: " + (t.getExperimentalSlot()+1) + "\n");
 		expText.append("Name: " + t.getExperimentalName() + "\n");
 		
 		HashMap<Integer, String> controls = t.getControls();
@@ -77,7 +73,7 @@ public class WheelActivity extends Activity {
 		}
 		else {
 			for (Integer i: controls.keySet()) {
-				controlText.append("Slot " + i + ": " + controls.get(i) + "\n");
+				controlText.append("Slot " + (i+1) + ": " + controls.get(i) + "\n");
 			}
 		}
 		
