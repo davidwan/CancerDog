@@ -112,7 +112,22 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
 				}
 			}
 		);
-		assertFalse(next.isEnabled());
+		assertTrue(rAct.controlsArray.size() > 1);
+	}
+	
+	public void testMakeSelections_twoPositiveControls () {
+		rAct.controlsArray.add("test");
+		rAct.controlsArray.add("more");
+		rAct.runOnUiThread(
+			new Runnable() {
+				public void run() {
+					mPicker.setValue(1);
+					assertEquals(mPicker.getValue(),1);
+					select.performClick();
+				}
+			}
+		);
+		assertTrue(rAct.controlsArray.size() >2);
 	}
 	
 	public void testValueChange () {

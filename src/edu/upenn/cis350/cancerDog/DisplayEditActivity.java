@@ -38,7 +38,7 @@ public class DisplayEditActivity extends ListActivity {
 				key = edit.split(":")[0];
 				
 				if (!key.equals("sessionNumber") && !key.equals("experimentalSlot") && !key.contains("controlSlot") && !key.equals("experimentalSlot") && !key.equals("time") && !key.equals("date")) {
-					Toast.makeText(DisplayEditActivity.this, key, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(DisplayEditActivity.this, key, Toast.LENGTH_SHORT).show();
 				    
 				    final EditText input = new EditText(DisplayEditActivity.this);
 				    
@@ -72,7 +72,7 @@ public class DisplayEditActivity extends ListActivity {
 	
 	protected void updateTrial () {
 		Trial.edit(trialNum, key, val);
-		Toast.makeText(DisplayEditActivity.this, key + ":" + val, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(DisplayEditActivity.this, key + ":" + val, Toast.LENGTH_SHORT).show();
 		String[] trialData = Trial.getTrial(trialNum).toString().split("\n");
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.activity_displayedit, trialData));
 	}
