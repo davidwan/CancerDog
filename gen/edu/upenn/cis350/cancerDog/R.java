@@ -31,8 +31,8 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090028;
-        public static final int controlLabel=0x7f090026;
+        public static final int action_settings=0x7f090029;
+        public static final int controlLabel=0x7f090027;
         public static final int controlNumberPicker=0x7f09000b;
         public static final int edit=0x7f090002;
         public static final int editNotes=0x7f090023;
@@ -49,7 +49,7 @@ public final class R {
         public static final int next1=0x7f09000c;
         public static final int next2=0x7f090022;
         public static final int randomize=0x7f090008;
-        public static final int sampleNumberPicker=0x7f09000a;
+        public static final int spinner=0x7f09000a;
         public static final int spinner1=0x7f09000d;
         public static final int spinner2=0x7f09001a;
         public static final int spinner3=0x7f09001b;
@@ -59,6 +59,7 @@ public final class R {
         public static final int spinner7=0x7f09001f;
         public static final int spinner8=0x7f090021;
         public static final int spinner9=0x7f090019;
+        public static final int textAreaScroller=0x7f090026;
         public static final int textView0=0x7f090018;
         public static final int textView1=0x7f090006;
         public static final int textView2=0x7f090007;
@@ -71,7 +72,7 @@ public final class R {
         public static final int textView9=0x7f090024;
         public static final int view=0x7f090001;
         public static final int viewSwitcher=0x7f090005;
-        public static final int wheelView=0x7f090027;
+        public static final int wheelView=0x7f090028;
     }
     public static final class layout {
         public static final int activity_displayedit=0x7f030000;
