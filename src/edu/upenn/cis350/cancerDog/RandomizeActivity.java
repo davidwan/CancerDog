@@ -41,8 +41,8 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	private int expSlot;
 	private String expName;
 	
-	private ArrayList<String> experimentsArray = new ArrayList<String> ();
-	private ArrayList<String> controlsArray = new ArrayList<String> ();
+	public ArrayList<String> experimentsArray = new ArrayList<String> ();
+	public ArrayList<String> controlsArray = new ArrayList<String> ();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,8 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 
 		nextButton = (Button) findViewById(R.id.next);
 		nextButton.setEnabled(false);
+		
+		controlsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "controls");
 
 	}
 
@@ -110,8 +112,6 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		numControls = controlNumberPicker.getValue();
 		controlNames = new ArrayList<String> ();
 		numSelectedControls = 0;
-		
-		controlsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "controls");
 		CharSequence[] controlsSequence = controlsArray.toArray(new CharSequence[controlsArray.size()]);
 
 		if (controlsArray.size() <= 0) {

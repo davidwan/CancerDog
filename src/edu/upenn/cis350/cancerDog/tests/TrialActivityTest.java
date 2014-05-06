@@ -73,7 +73,7 @@ public class TrialActivityTest extends ActivityInstrumentationTestCase2<TrialAct
 	}
 	
 	public void testTextView6_labelText() {
-	    final String expected = "Time Start";
+	    final String expected = "Date";
 	    final String actual = label6.getText().toString();
 	    assertEquals(expected, actual);
 	}

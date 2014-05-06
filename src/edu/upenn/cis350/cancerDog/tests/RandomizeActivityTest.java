@@ -1,5 +1,8 @@
 package edu.upenn.cis350.cancerDog.tests;
 
+import java.util.ArrayList;
+
+import edu.upenn.cis350.cancerDog.EditDefaultActivity;
 import edu.upenn.cis350.cancerDog.R;
 import edu.upenn.cis350.cancerDog.RandomizeActivity;
 import android.test.ActivityInstrumentationTestCase2;
@@ -14,6 +17,8 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
 	private NumberPicker mPicker;
 	private TextView label1;
 	private TextView label2;
+	private Button select;
+	private Button next;
 	
 	public RandomizeActivityTest () {
         super(RandomizeActivity.class);
@@ -26,16 +31,20 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
         mPicker =(NumberPicker) rAct.findViewById(R.id.controlNumberPicker);
         label1 = (TextView) rAct.findViewById(R.id.textView1);
         label2 = (TextView) rAct.findViewById(R.id.textView2);
+        select = (Button) rAct.findViewById(R.id.randomize);
+        next = (Button) rAct.findViewById(R.id.next);
     }
 	
 	public void testPreconditions() {
 	    assertNotNull(rAct);
 	    assertNotNull(mSpinner);
 	    assertNotNull(mPicker);
+	    assertNotNull(select);
+	    assertNotNull(next);
 	}
 	
 	public void testTextView1_labelText() {
-	    final String expected = "Number of Experimentals";
+	    final String expected = "Experimental";
 	    final String actual = label1.getText().toString();
 	    assertEquals(expected, actual);
 	}
@@ -45,5 +54,78 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
 	    final String actual = label2.getText().toString();
 	    assertEquals(expected, actual);
 	}
+	
+	public void testmSpinner_labels () {
+		String expected = EditDefaultActivity.getGroup(rAct, "experimentals").get(0);
+		String actual = mSpinner.getSelectedItem().toString();
+		assertEquals(expected, actual);
+	}
+	
+	public void testMakeSelections_zero () {
+		new Runnable() {
+			public void run() {
+				mPicker.requestFocus();
+				mPicker.setValue(0);
+				select.requestFocus();
+				select.performClick();
+				assertFalse(next.isEnabled());
+			}
+		};
+	}
+	
+	public void testMakeSelections_morethanzero () {
+		rAct.runOnUiThread(
+			new Runnable() {
+				public void run() {
+					mPicker.setValue(1);
+					assertEquals(mPicker.getValue(),1);
+					select.performClick();
+				}
+			}
+		);
+		assertFalse(next.isEnabled());
+	}
+	
+	public void testMakeSelections_noControls () {
+		rAct.runOnUiThread(
+			new Runnable() {
+				public void run() {
+					rAct.controlsArray.clear();
+					mPicker.setValue(1);
+					next.setEnabled(false);
+					assertEquals(1,mPicker.getValue());
+					select.performClick();
+				}
+			}
+		);
+		assertFalse(next.isEnabled());
+	}
+	
+	public void testMakeSelections_positiveControls () {
+		rAct.controlsArray.add("test");
+		rAct.runOnUiThread(
+			new Runnable() {
+				public void run() {
+					mPicker.setValue(1);
+					assertEquals(mPicker.getValue(),1);
+					select.performClick();
+				}
+			}
+		);
+		assertFalse(next.isEnabled());
+	}
+	
+	public void testValueChange () {
+		new Runnable() {
+			public void run() {
+				next.setEnabled(true);
+				mPicker.requestFocus();
+				mPicker.setValue(11);
+				assertFalse(next.isEnabled());
+			}
+		};
+	}
+	
+	
 	
 }
