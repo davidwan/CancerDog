@@ -122,7 +122,7 @@ public class Trial {
 	}
 
 	public static Trial getNewTrial() {
-		return getTrial(numTrials);
+		return getTrial(getNumTrials());
 	}
 
 	public static Trial getCurrentTrial(Context c) {
