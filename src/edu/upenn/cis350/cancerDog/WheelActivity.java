@@ -70,7 +70,7 @@ public class WheelActivity extends Activity {
 	private void saveWheel() {
 		Trial t = Trial.getCurrentTrial(this);
 		t.addTopArm(wheel.getTopArm());
-		t.save(false);
+		t.save(false, false);
 	}
 	
 	private void saveTrial(boolean doneWithSession) {
@@ -82,7 +82,7 @@ public class WheelActivity extends Activity {
 			t.addDirection(dirSpinner.getSelectedItem().toString());
 			t.addNotes(notes);
 		}
-		t.save(doneWithSession);
+		t.save(doneWithSession, true);
 	}
 	
 	public void endSession (View v) {

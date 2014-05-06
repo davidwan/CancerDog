@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import com.google.gson.GsonBuilder;
 
@@ -33,10 +37,14 @@ public class Trial {
 	private String observers;
 	private String time;
 	private String date;
-	private ArrayList<String> notes = new ArrayList<String> ();
-	private ArrayList<String> directions = new ArrayList<String> ();
+	private ArrayList<String> notes = new ArrayList<String>();
+	private ArrayList<String> directions = new ArrayList<String>();
 	private ArrayList<Result[]> trialResults = new ArrayList<Result[]>();
-	private ArrayList<Integer> topArms = new ArrayList<Integer>(); // the arms that are on the top in trials
+	private ArrayList<Integer> topArms = new ArrayList<Integer>(); // the arms
+																	// that are
+																	// on the
+																	// top in
+																	// trials
 
 	public static Trial getTrial(int num) {
 		if (cache.containsKey(num)) {
@@ -55,7 +63,8 @@ public class Trial {
 		int numControls = preferences.getInt("numControls", 0);
 		for (int i = 0; i < numControls; i++) {
 			int slot = preferences.getInt("controlSlot[" + i + "]", 0);
-			String name = preferences.getString("controlName[" + i + "}", defaultStr);
+			String name = preferences.getString("controlName[" + i + "}",
+					defaultStr);
 			t.addControl(slot, name);
 		}
 
@@ -67,22 +76,26 @@ public class Trial {
 		t.setDate(preferences.getString("date", defaultStr));
 
 		int numResults = preferences.getInt("numResults", 0);
-		for(int i = 0; i < numResults; i++) {
+		for (int i = 0; i < numResults; i++) {
 			Result[] result = new Result[12];
-			for(int j = 0; j < 12; j++) {
+			for (int j = 0; j < 12; j++) {
 				result[j] = new Result();
-				String r = preferences.getString("results[" + i + "][" + j + "]", defaultStr);
+				String r = preferences.getString("results[" + i + "][" + j
+						+ "]", defaultStr);
 				if (!r.equals(defaultStr)) {
 					String[] tokens = r.split(" ");
 					if (tokens.length == 3) {
 						if (tokens[0].startsWith("Miss")) {
-							result[j].numMiss = Integer.parseInt(tokens[0].substring(4));
+							result[j].numMiss = Integer.parseInt(tokens[0]
+									.substring(4));
 						}
 						if (tokens[1].startsWith("False")) {
-							result[j].numFalse = Integer.parseInt(tokens[1].substring(5));
+							result[j].numFalse = Integer.parseInt(tokens[1]
+									.substring(5));
 						}
 						if (tokens[2].startsWith("Success")) {
-							result[j].numSuccess = Integer.parseInt(tokens[2].substring(7));
+							result[j].numSuccess = Integer.parseInt(tokens[2]
+									.substring(7));
 						}
 					}
 				}
@@ -91,7 +104,8 @@ public class Trial {
 			int angle = preferences.getInt("topArm[" + i + "]", 0);
 			t.addTopArm(angle);
 			t.addNotes(preferences.getString("notes[" + i + "]", defaultStr));
-			//t.addDirection(preferences.getString("direction[" + i + "]", defaultStr));
+			// t.addDirection(preferences.getString("direction[" + i + "]",
+			// defaultStr));
 		}
 
 		cache.put(num, t);
@@ -100,9 +114,12 @@ public class Trial {
 	}
 
 	public static int getNumTrials() {
+		Log.i("GRTTrial", "In num trials");
 		if (numTrials == null) {
+			Log.i("GRTTrial", "In if null");
 			SharedPreferences mainPreferences = context.getSharedPreferences(
 					"edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
+			Log.i("GRTTrial", "context is not null");
 			numTrials = mainPreferences.getInt("numTrials", 0);
 		}
 		return numTrials;
@@ -116,7 +133,7 @@ public class Trial {
 		context = c;
 		return getTrial(getNumTrials());
 	}
-	
+
 	private HashMap<String, Object> toHashMap() {
 		HashMap<String, Object> trial = new HashMap<String, Object>();
 		trial.put("experimentalSlot", expSlot);
@@ -143,18 +160,17 @@ public class Trial {
 				"edu.upenn.cis350.cancerDog.trial" + sessionNumber,
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
-		
+
 		if (key.contains("topArm")) {
 			try {
 				editor.putInt(key, Integer.parseInt(val));
 			} catch (NumberFormatException e) {
-				
+
 			}
-		}
-		else {
+		} else {
 			editor.putString(key, val);
 		}
-		
+
 		cache.remove(sessionNumber);
 
 		editor.commit();
@@ -165,8 +181,13 @@ public class Trial {
 		task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
 	}
 
-	public void save(boolean doneWithTrial) {
-		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+sessionNumber, Context.MODE_PRIVATE);
+	public void save(boolean doneWithTrial, boolean post) {
+		if(context == null) {
+			Log.i("GRTTrial", "Context is null");
+		}
+		SharedPreferences preferences = context.getSharedPreferences(
+				"edu.upenn.cis350.cancerDog.trial" + sessionNumber,
+				Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 
 		editor.putInt("experimentalSlot", expSlot);
@@ -189,28 +210,37 @@ public class Trial {
 		editor.putString("time", time);
 		editor.putString("date", date);
 		editor.putInt("numResults", trialResults.size());
-		for(int i = 0; i < trialResults.size(); i++) {
-			for(int j = 0; j < trialResults.get(i).length; j++) {
+		for (int i = 0; i < trialResults.size(); i++) {
+			for (int j = 0; j < trialResults.get(i).length; j++) {
 				Result r = trialResults.get(i)[j];
-				editor.putString("results[" + i + "][" + j +"]", "Miss" + r.numMiss
-						+ " False" + r.numFalse + " Success" + r.numSuccess);
+				editor.putString("results[" + i + "][" + j + "]", "Miss"
+						+ r.numMiss + " False" + r.numFalse + " Success"
+						+ r.numSuccess);
 			}
 			editor.putInt("topArm[" + i + "]", topArms.get(i));
 			editor.putString("notes[" + i + "]", notes.get(i));
-			editor.putString("direction[" + i + "]", directions.get(i));
+			if(i < directions.size()) {
+				editor.putString("direction[" + i + "]", directions.get(i));
+			}
 		}
 		editor.commit();
 
 		if (doneWithTrial) {
-			SharedPreferences mainPreferences = context.getSharedPreferences(
-					"edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
-			editor = mainPreferences.edit();
-			editor.putInt("numTrials", getNumTrials() + 1);
-			numTrials += 1;
-			editor.commit();
-			HashMap<String, Object> trial = toHashMap();
-			PostJson task = new PostJson();
-			task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
+			if (getNumTrials() <= sessionNumber) {
+				numTrials = sessionNumber;
+				SharedPreferences mainPreferences = context
+						.getSharedPreferences("edu.upenn.cis350.cancerDog",
+								Context.MODE_PRIVATE);
+				editor = mainPreferences.edit();
+				editor.putInt("numTrials", getNumTrials() + 1);
+				numTrials += 1;
+				editor.commit();
+			}
+			if(post) {
+				HashMap<String, Object> trial = toHashMap();
+				PostJson task = new PostJson();
+				task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
+			}
 		}
 	}
 
@@ -297,23 +327,23 @@ public class Trial {
 	public void setDog(String dog) {
 		this.dog = dog;
 	}
-	
+
 	public ArrayList<Result[]> getTrialResults() {
 		return trialResults;
 	}
-	
+
 	public void addTrialResult(Result[] result) {
 		Result[] copy = new Result[result.length];
-		for (int i=0; i<result.length; ++i) {
+		for (int i = 0; i < result.length; ++i) {
 			copy[i] = new Result(result[i]);
 		}
 		trialResults.add(copy);
 	}
-	
+
 	public ArrayList<Integer> getTopArms() {
 		return topArms;
 	}
-	
+
 	public void addTopArm(int a) {
 		topArms.add(a);
 	}
@@ -325,11 +355,11 @@ public class Trial {
 	public void addNotes(String n) {
 		notes.add(n);
 	}
-	
+
 	public ArrayList<String> getDirections() {
 		return directions;
 	}
-	
+
 	public void addDirection(String d) {
 		directions.add(d);
 	}
@@ -351,17 +381,17 @@ public class Trial {
 			s.append("controlSlot[" + ind + "]: " + i + "\n");
 			ind++;
 		}
-		
+
 		for (int i = 0; i < trialResults.size(); i++) {
 			s.append("topArm[" + i + "]: " + topArms.get(i) + "\n");
-			if(i < directions.size()) {
+			if (i < directions.size()) {
 				s.append("direction[" + i + "]:" + directions.get(i) + "\n");
 			}
 			for (int j = 0; j < trialResults.get(i).length; j++) {
 				Result r = trialResults.get(i)[j];
-				s.append("results[" + i + "][" + j + "]: " + " Result: " + "Miss"
-						+ r.numMiss + "   False" + r.numFalse + "   Success" 
-						+ r.numSuccess + "\n");
+				s.append("results[" + i + "][" + j + "]: " + " Result: "
+						+ "Miss" + r.numMiss + "   False" + r.numFalse
+						+ "   Success" + r.numSuccess + "\n");
 			}
 			s.append("notes[" + i + "]:" + notes.get(i) + "\n");
 		}
@@ -393,6 +423,85 @@ public class Trial {
 			return null;
 		}
 
+	}
+
+	private static class GetSessions extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			try {
+				HttpGet httpGet = new HttpGet("http://pennvet.herokuapp.com/");
+				HttpResponse response = new DefaultHttpClient()
+						.execute(httpGet);
+				HttpEntity entity = response.getEntity();
+				String csv = EntityUtils.toString(entity, "UTF-8");
+				Log.i("GRTTrial", "Response: " + csv);
+				Log.i("GRTTrial", response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
+				String[] lines = csv.split("\n");
+				for (int i = 1; i < lines.length; i++) {
+					Trial t = new Trial();
+					String[] parts = lines[i].split(",");
+					t.sessionNumber = Integer.parseInt(parts[0]);
+					t.date = parts[1];
+					t.time = parts[2];
+					t.handler = parts[3];
+					t.dog = parts[4];
+					t.videographer = parts[5];
+					t.observers = parts[6];
+					t.expName = parts[7];
+					t.expSlot = Integer.parseInt(parts[8]);
+					t.controls = new HashMap<Integer, String>();
+					String[] controlPairs = parts[9].split(";");
+					for (String pair : controlPairs) {
+						String[] keyValue = pair.split(":");
+						t.controls.put(Integer.parseInt(keyValue[0]),
+								keyValue[1]);
+					}
+
+					t.notes = new ArrayList<String>();
+					t.trialResults = new ArrayList<Result[]>();
+					t.topArms = new ArrayList<Integer>();
+					for (int j = 0; j < (parts.length - 9) / 3; j++) {
+						ArrayList<Result> results = new ArrayList<Result>();
+						Result r = new Result();
+						String[] resultPairs = parts[10 + j * 3].split(";");
+						for (int k = 0; k < resultPairs.length; k++) {
+							String[] keyValue = resultPairs[k].split(":");
+							if (keyValue[0].equals("numFalse")) {
+								r.numFalse = Integer.parseInt(keyValue[1]);
+							} else if (keyValue[0].equals("numMiss")) {
+								r.numMiss = Integer.parseInt(keyValue[1]);
+							} else if (keyValue[0].equals("numFalse")) {
+								r.numFalse = Integer.parseInt(keyValue[1]);
+								results.add(r);
+								r = new Result();
+							}
+						}
+						Result[] rs = new Result[results.size()];
+						for (int k = 0; k < results.size(); k++) {
+							rs[i] = results.get(i);
+						}
+						t.trialResults.add(rs);
+						t.notes.add(parts[11 + j * 3]);
+						t.topArms.add(Integer.parseInt(parts[12 + j * 3]));
+					}
+					t.save(true, false);
+				}
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+	}
+
+	public static void loadSessions() {
+		GetSessions task = new GetSessions();
+		task.execute();
 	}
 
 }

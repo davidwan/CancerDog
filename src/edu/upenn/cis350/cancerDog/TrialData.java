@@ -42,7 +42,7 @@ public class TrialData extends Activity {
 		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
 		//t.addTrialResult(trialResults);
 		t.addNotes(notes);
-		t.save(doneWithTrial);
+		t.save(doneWithTrial, true);
 	}
 	
 	public void onNextButtonClick (View v) {
