@@ -23,7 +23,7 @@ public class Trial {
 	private static Integer numTrials;
 	public static Context context;
 	private static HashMap<Integer, Trial> cache = new HashMap<Integer, Trial>();
-	private Integer trialNumber;
+	private Integer sessionNumber;
 	private int expSlot;
 	private String expName;
 	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
@@ -100,6 +100,26 @@ public class Trial {
 		context = c;
 		return getTrial(getNumTrials());
 	}
+	
+	private HashMap<String, Object> toHashMap() {
+		HashMap<String, Object> trial = new HashMap<String, Object>();
+		trial.put("experimentalSlot", expSlot);
+		trial.put("experimentalName", expName);
+		if (controls != null) {
+			trial.put("controls", controls);
+		}
+		trial.put("handler", handler);
+		trial.put("dog", dog);
+		trial.put("videographer", videographer);
+		trial.put("observers", observers);
+		trial.put("time", time);
+		trial.put("date", date);
+		trial.put("results", trialResults);
+		trial.put("notes", notes);
+		trial.put("rotatedAngles", rotatedAngles);
+		trial.put("sessionNumber", sessionNumber);
+		return trial;
+	}
 
 	public static void edit(int trialNumber, String key, String val) {
 		SharedPreferences preferences = context.getSharedPreferences(
@@ -111,21 +131,15 @@ public class Trial {
 		cache.remove(trialNumber);
 
 		editor.commit();
-		
-		HashMap<String, Object> trial = new HashMap<String, Object>();
-		trial.put("key", key);
-		trial.put("val", val);
-		trial.put("trialNumber", trialNumber);
-		Log.i("GRTTrial", "trialNumber edit: " + trialNumber);
+
+		HashMap<String, Object> trial = getTrial(trialNumber).toHashMap();
 		trial.put("edit", true);
 		PostJson task = new PostJson();
 		task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
 	}
 
 	public void save(boolean doneWithTrial) {
-		SharedPreferences preferences = context.getSharedPreferences(
-				"edu.upenn.cis350.cancerDog.trial" + trialNumber,
-				Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+sessionNumber, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 
 		editor.putInt("experimentalSlot", expSlot);
@@ -164,22 +178,7 @@ public class Trial {
 			editor.putInt("numTrials", getNumTrials() + 1);
 			numTrials += 1;
 			editor.commit();
-			HashMap<String, Object> trial = new HashMap<String, Object>();
-			trial.put("experimentalSlot", expSlot);
-			trial.put("experimentalName", expName);
-			if (controls != null) {
-				trial.put("controls", controls);
-			}
-			trial.put("handler", handler);
-			trial.put("dog", dog);
-			trial.put("videographer", videographer);
-			trial.put("observers", observers);
-			trial.put("time", time);
-			trial.put("date", date);
-			trial.put("results", trialResults);
-			trial.put("notes", notes);
-			trial.put("rotatedAngles", rotatedAngles);
-			trial.put("trialNumber", trialNumber);
+			HashMap<String, Object> trial = toHashMap();
 			PostJson task = new PostJson();
 			task.execute((HashMap<String, Object>[]) (new HashMap[] { trial }));
 		}
@@ -187,11 +186,11 @@ public class Trial {
 	}
 
 	public Integer getTrialNumber() {
-		return trialNumber;
+		return sessionNumber;
 	}
 
 	public void setTrialNumber(Integer preferenceNumber) {
-		this.trialNumber = preferenceNumber;
+		this.sessionNumber = preferenceNumber;
 	}
 
 	public int getExperimentalSlot() {
@@ -296,7 +295,7 @@ public class Trial {
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();
-		s.append("trialNumber: " + trialNumber + "\n");
+		s.append("sessionNumber: " + (sessionNumber + 1) + "\n");
 		s.append("experimentalSlot: " + expSlot + "\n");
 		s.append("experimentalName: " + expName + "\n");
 		int ind = 0;
@@ -335,6 +334,7 @@ public class Trial {
 				httpPost.setHeader("Accept", "application/json");
 				httpPost.setHeader("Content-type", "application/json");
 				new DefaultHttpClient().execute(httpPost);
+				Log.i("GRTTrial", "Posted");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (ClientProtocolException e) {
