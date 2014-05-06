@@ -22,7 +22,7 @@ public class Trial {
 	private String time;
 	private String date;
 	private ArrayList<String> notes = new ArrayList<String> ();
-	private ArrayList<String[]> trialResults = new ArrayList<String[]>();
+	private ArrayList<Result[]> trialResults = new ArrayList<Result[]>();
 	private ArrayList<Integer> rotatedAngles = new ArrayList<Integer>(); 
 	
 	public static Trial getTrial(int num) {
@@ -53,9 +53,24 @@ public class Trial {
 		
 		int numResults = preferences.getInt("numResults", 0);
 		for(int i = 0; i < numResults; i++) {
-			String[] result = new String[12];
+			Result[] result = new Result[12];
 			for(int j = 0; j < 12; j++) {
-				result[j] = preferences.getString("results" + i + j, defaultStr);
+				result[j] = new Result();
+				String r = preferences.getString("results" + i + j, defaultStr);
+				if (!r.equals(defaultStr)) {
+					String[] tokens = r.split(" ");
+					if (tokens.length == 3) {
+						if (tokens[0].startsWith("Miss")) {
+							result[j].numMiss = Integer.parseInt(r.substring(4));
+						}
+						if (tokens[1].startsWith("False")) {
+							result[j].numFalse = Integer.parseInt(r.substring(5));
+						}
+						if (tokens[2].startsWith("Success")) {
+							result[j].numSuccess = Integer.parseInt(r.substring(7));
+						}
+					}
+				}
 			}
 			t.addTrialResult(result);
 			int angle = preferences.getInt("rotatedAngle" + i, 0);
@@ -125,10 +140,12 @@ public class Trial {
 		editor.putInt("numResults", trialResults.size());
 		for(int i = 0; i < trialResults.size(); i++) {
 			for(int j = 0; j < trialResults.get(i).length; j++) {
-				editor.putString("results" + i + j, trialResults.get(i)[j]);
+				Result r = trialResults.get(i)[j];
+				editor.putString("results" + i + j, "Miss" + r.numMiss
+						+ " False" + r.numFalse + " Success" + r.numSuccess);
 			}
 			editor.putInt("rotatedAngle" + i, rotatedAngles.get(i));
-			editor.putString("notes", notes.get(i));
+			//editor.putString("notes", notes.get(i));
 		}
 		
 		editor.commit();
@@ -218,11 +235,11 @@ public class Trial {
 		this.dog = dog;
 	}
 	
-	public ArrayList<String[]> getTrialResults() {
+	public ArrayList<Result[]> getTrialResults() {
 		return trialResults;
 	}
 	
-	public void addTrialResult(String[] result) {
+	public void addTrialResult(Result[] result) {
 		trialResults.add(result);
 	}
 	

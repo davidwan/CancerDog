@@ -6,11 +6,11 @@
 	android:layout_height="fill_parent">
 	
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/trialLabel"
         android:layout_width="wrap_content"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:text="Randomized Wheel"
+        android:text="Trial "
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <LinearLayout
@@ -53,9 +53,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="1" >
+	    
+        <Button
+			android:id="@+id/end"
+		    android:layout_column="0"
+		    android:layout_gravity="left|top"
+		    android:layout_row="0"
+		    android:onClick="endSession"
+		    android:text="End Session" />
+	    
+        <Button
+         	android:id="@+id/record"
+         	android:layout_column="0"
+         	android:layout_gravity="center|top"
+         	android:layout_row="0"
+         	android:onClick="record"
+         	android:text="Record" />
 
         <Button
-            android:id="@+id/next"
+            android:id="@+id/nextTrial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"

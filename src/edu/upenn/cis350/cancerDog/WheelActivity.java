@@ -1,68 +1,104 @@
 package edu.upenn.cis350.cancerDog;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 public class WheelActivity extends Activity {
 	
 	public static final int ButtonClickActivity_ID = 3;
 	
 	// UI elements
+	private TextView trialLabel;
 	private TextView expLabel, controlLabel;
-	private WheelView wheelView;
+	private WheelView wheel;
+	private Button recordButton, nextButton, endButton;
+	
+	// Trial results
+	private Result[] results = new Result[12];
+	private int currTrial = 1;
+	
+	// For recording slot results
+	private int currSlot = -1;
+	private SlotRecorder sr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wheel);
 		
+		trialLabel = (TextView) findViewById(R.id.trialLabel);
 		expLabel = (TextView) findViewById(R.id.experimentalLabel);
 		controlLabel = (TextView) findViewById(R.id.controlLabel);
-		wheelView = (WheelView) findViewById(R.id.wheelView);
+		wheel = (WheelView) findViewById(R.id.wheelView);
+		recordButton = (Button) findViewById(R.id.record);
+		nextButton = (Button) findViewById(R.id.nextTrial);
+		endButton = (Button) findViewById(R.id.end);
+		
+		nextButton.setEnabled(false);
 		
 		Trial t = Trial.getCurrentTrial(this);
 		setupLabels(t);
-		wheelView.init(t);
+		wheel.init(this, t);
+		
+		for (int i=0; i<12; ++i) {
+			results[i] = new Result();
+		}
+	}
+	
+	private void saveWheel() {
+		Trial t = Trial.getCurrentTrial(this);
+		t.addRotatedAngle(wheel.getRotatedAngle());
+		t.save();
 	}
 	
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
-		t.addRotatedAngle(wheelView.getRotatedAngle());
+		
+//		notes = "";
+//		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
+		t.addTrialResult(results);
+		t.addNotes("");
 		t.save();
 	}
 	
-	public void onExitButtonClick (View v) {
+	public void endSession (View v) {
 		saveTrial();
 		finish();
-        System.exit(0);
+        Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
+	
+	public void record (View v) {
+		saveWheel();
+		wheel.fix();
+		nextButton.setEnabled(true);
+		recordButton.setEnabled(false);
 	}
 	
 	public void onNextButtonClick (View v) {
 		saveTrial();
-		Intent i = new Intent(this, TrialData.class);
-		startActivityForResult(i,ButtonClickActivity_ID);
+		for (int i=0; i<12; ++i) {
+			results[i].reset();
+		}
+		currTrial++;
+		wheel.unfix();
+		nextButton.setEnabled(false);
+		recordButton.setEnabled(true);
 	}
 	
 	public void setupLabels(Trial t) {
+		trialLabel.setText("Trial " + currTrial);
+		
 		StringBuffer expText = new StringBuffer();
 		expText.append("Slot: " + (t.getExperimentalSlot()+1) + "\n");
 		expText.append("Name: " + t.getExperimentalName() + "\n");
@@ -80,6 +116,37 @@ public class WheelActivity extends Activity {
 		
 		expLabel.setText(expLabel.getText() + expText.toString());
 		controlLabel.setText(controlLabel.getText() + controlText.toString());
+	}
+	
+	protected void recordSlot(int slot) {
+		// Pop up a dialog that allows user to record misses, falses and successes for each slot
+		//Toast.makeText(this, "Slot " + (slot+1), Toast.LENGTH_SHORT).show();
+		currSlot = slot;
+		AlertDialog.Builder temp = new AlertDialog.Builder(this);
+		temp.setTitle("Slot " + (slot+1));
+		
+		sr = new SlotRecorder(this, results[slot]);
+		temp.setView(sr);
+		
+		temp.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				writeResult();
+			}
+		});
+		
+		AlertDialog tempDialog = temp.create();
+		tempDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			public void onDismiss(DialogInterface dialog) {
+				writeResult();
+			}
+		});
+		tempDialog.show();
+	}
+	
+	void writeResult() {
+		if (currSlot != -1) {
+			results[currSlot] = sr.getResult();
+		}
 	}
 	
 	@Override

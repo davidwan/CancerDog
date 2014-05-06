@@ -2,8 +2,6 @@ package edu.upenn.cis350.cancerDog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -26,6 +24,9 @@ public class WheelView extends View {
 	private int width = -1;
 	private int height;
 	private float centerX, centerY;
+	
+	private WheelActivity activity;
+	private boolean fixed = false;
 
 	public WheelView(Context c) {
 		super(c);
@@ -35,7 +36,9 @@ public class WheelView extends View {
 		super(c, a);
 	}
 
-	protected void init(Trial t) {
+	protected void init(WheelActivity activity, Trial t) {
+		this.activity = activity;
+		
 		cir = new ShapeDrawable[wheelSize];
 		for (int i=0; i<wheelSize; ++i) {
 			cir[i] = new ShapeDrawable(new OvalShape());
@@ -65,6 +68,14 @@ public class WheelView extends View {
 		
 		labelPaint.setColor(Color.BLACK);
 		labelPaint.setTextSize(60);
+	}
+	
+	protected void fix() {
+		fixed = true;
+	}
+	
+	protected void unfix() {
+		fixed = false;
 	}
 	
 	private void drawLabels(Canvas canvas) {
@@ -113,36 +124,49 @@ public class WheelView extends View {
 	public boolean onTouchEvent(MotionEvent e) {
 		float x = e.getX();
 		float y = e.getY();
-		double angle;
-		switch (e.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			prevAngle = Math.atan((y-centerY)/(x-centerX));
-			return true;
-		case MotionEvent.ACTION_MOVE:
-			angle = Math.atan((y-centerY)/(x-centerX));
-			if (angle-prevAngle > Math.PI/2) {
-				prevAngle += Math.PI;
+		
+		if (!fixed) {
+			double angle;
+			switch (e.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				prevAngle = Math.atan((y-centerY)/(x-centerX));
+				return true;
+			case MotionEvent.ACTION_MOVE:
+				angle = Math.atan((y-centerY)/(x-centerX));
+				if (angle-prevAngle > Math.PI/2) {
+					prevAngle += Math.PI;
+				}
+				else if (angle-prevAngle < -Math.PI/2) {
+					prevAngle -= Math.PI;
+				}
+				rotatedAngle += angle - prevAngle;
+				prevAngle = angle;
+				invalidate();
+				return true;
+			case MotionEvent.ACTION_UP:
+				angle = Math.atan((y-centerY)/(x-centerX));
+				if (angle-prevAngle > Math.PI/2) {
+					prevAngle += Math.PI;
+				}
+				else if (angle-prevAngle < -Math.PI/2) {
+					prevAngle -= Math.PI;
+				}
+				rotatedAngle += angle - prevAngle;
+				rotatedAngle = Math.round(rotatedAngle/(Math.PI/6)) * Math.PI/6;
+				invalidate();
+				return true;	
+			default:
+				return false;
 			}
-			else if (angle-prevAngle < -Math.PI/2) {
-				prevAngle -= Math.PI;
+		}
+		else {
+			for (int i=0; i<wheelSize; ++i) {
+				Rect bounds = cir[i].getBounds();
+				if (x >= bounds.left && x <= bounds.right
+						&& y >= bounds.top && y <= bounds.bottom) {
+					activity.recordSlot(i);
+				}
 			}
-			rotatedAngle += angle - prevAngle;
-			prevAngle = angle;
-			invalidate();
-			return true;
-		case MotionEvent.ACTION_UP:
-			angle = Math.atan((y-centerY)/(x-centerX));
-			if (angle-prevAngle > Math.PI/2) {
-				prevAngle += Math.PI;
-			}
-			else if (angle-prevAngle < -Math.PI/2) {
-				prevAngle -= Math.PI;
-			}
-			rotatedAngle += angle - prevAngle;
-			rotatedAngle = Math.round(rotatedAngle/(Math.PI/6)) * Math.PI/6;
-			invalidate();
-			return true;	
-		default:
 			return false;
 		}
 	}
