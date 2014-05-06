@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 
 public class LauncherActivity extends Activity {
 	

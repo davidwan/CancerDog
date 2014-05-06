@@ -1,5 +1,6 @@
 package edu.upenn.cis350.cancerDog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -13,18 +14,32 @@ import android.widget.Spinner;
 
 public class TrialActivity extends Activity{
 	public static final int ButtonClickActivity_ID = 2;
-	private EditText time, videographer, observers, dog, date;
-	private Spinner handler;
+	private EditText time, videographer, observers, date;
+	private Spinner handler, dog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_trial);
-		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.handlers, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter <CharSequence> adapterHandler = new ArrayAdapter<CharSequence> (this, android.R.layout.simple_spinner_item);
+		ArrayList<String> handlers = EditDefaultActivity.getGroup(this, "handlers");
+		for (String s: handlers) {
+			adapterHandler.add(s);
+		}
+		adapterHandler.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
+		ArrayAdapter <CharSequence> adapterDog = new ArrayAdapter<CharSequence> (this, android.R.layout.simple_spinner_item);
+		ArrayList<String> dogs = EditDefaultActivity.getGroup(this, "dogs");
+		for (String s: dogs) {
+			adapterDog.add(s);
+		}
+		adapterDog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		handler = (Spinner) findViewById(R.id.spinner1);
-		handler.setAdapter(adapter);
-		dog = (EditText) findViewById(R.id.editText0);
+		handler.setAdapter(adapterHandler);
+		dog = (Spinner) findViewById(R.id.spinner2);
+		dog.setAdapter(adapterDog);
+		
 		videographer = (EditText) findViewById(R.id.editText1);
 		observers = (EditText) findViewById(R.id.editText2);
 		
@@ -58,7 +73,7 @@ public class TrialActivity extends Activity{
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
 		t.setTime(time.getText().toString());
-		t.setDog(dog.getText().toString());
+		t.setDog((String) dog.getSelectedItem());
 		t.setVideographer(videographer.getText().toString());
 		t.setObservers(observers.getText().toString());
 		t.setHandler((String) handler.getSelectedItem());
