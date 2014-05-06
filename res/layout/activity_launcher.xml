@@ -31,13 +31,6 @@
         android:layout_height="wrap_content"
         android:onClick="onEditDefaultButtonClick"
         android:text="Edit Defaults" />
-    
-    <Button
-        android:id="@+id/export"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onExitButtonClick"
-        android:text="Export Data" />
 
     <Button
         android:id="@+id/exit"

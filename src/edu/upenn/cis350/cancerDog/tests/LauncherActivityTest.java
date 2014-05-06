@@ -12,7 +12,6 @@ public class LauncherActivityTest extends ActivityInstrumentationTestCase2<Launc
 	private Button b1;
 	private Button b2;
 	private Button b3;
-	private Button b4;
 	private Button b5;
 	
 	public LauncherActivityTest () {
@@ -25,7 +24,6 @@ public class LauncherActivityTest extends ActivityInstrumentationTestCase2<Launc
         b1 =(Button) lAct.findViewById(R.id.launch);
         b2 =(Button) lAct.findViewById(R.id.view);
         b3 =(Button) lAct.findViewById(R.id.edit);
-        b4 =(Button) lAct.findViewById(R.id.export);
         b5 =(Button) lAct.findViewById(R.id.exit);
     }
 	
@@ -34,7 +32,6 @@ public class LauncherActivityTest extends ActivityInstrumentationTestCase2<Launc
 	    assertNotNull(b1);
 	    assertNotNull(b2);
 	    assertNotNull(b3);
-	    assertNotNull(b4);
 	    assertNotNull(b5);
 	}
 	
@@ -55,12 +52,7 @@ public class LauncherActivityTest extends ActivityInstrumentationTestCase2<Launc
 	    final String actual = b3.getText().toString();
 	    assertEquals(expected, actual);
 	}
-	
-	public void testb4_labelText() {
-	    final String expected = "Export Data";
-	    final String actual = b4.getText().toString();
-	    assertEquals(expected, actual);
-	}
+
 	
 	public void testb5_labelText() {
 	    final String expected = "Exit";

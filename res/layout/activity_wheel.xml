@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="6"
+        android:layout_weight="8"
         android:orientation="horizontal" >
         
 	    <TextView
@@ -52,7 +52,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:orientation="horizontal" >
 	    
 	    <TextView
@@ -60,6 +60,7 @@
 	        android:layout_width="0dip"
 	        android:layout_height="fill_parent"
         	android:layout_weight="1"
+        	android:layout_gravity="left|center"
 	        android:text="Dog Direction"
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
 		
@@ -67,13 +68,15 @@
 	        android:id="@+id/directionSpinner"
 	        android:layout_width="0dip"
 	        android:layout_height="fill_parent"
-        	android:layout_weight="1" />
+        	android:layout_weight="2"
+        	android:layout_gravity="left|center"
+        	android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:orientation="horizontal" >
         
         <TextView
@@ -81,6 +84,7 @@
 		    android:layout_width="0dip"
 	        android:layout_height="fill_parent"
         	android:layout_weight="1"
+        	android:layout_gravity="left|center"
 		    android:text="Notes"
 		    android:textAppearance="?android:attr/textAppearanceMedium" />
     
@@ -89,8 +93,9 @@
 		    android:layout_width="0dip"
 	        android:layout_height="fill_parent"
         	android:layout_weight="2"
+        	android:layout_gravity="left|center"
 		    android:ems="10"
-		    android:inputType="textMultiLine" />
+		    android:inputType="textCapSentences" />
    	</LinearLayout>
 
     <GridLayout

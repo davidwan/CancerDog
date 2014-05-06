@@ -444,8 +444,10 @@ public class Trial {
 					String[] controlPairs = parts[9].split(";");
 					for (String pair : controlPairs) {
 						String[] keyValue = pair.split(":");
-						t.controls.put(Integer.parseInt(keyValue[0]),
-								keyValue[1]);
+						if (keyValue.length == 2) {
+							t.controls.put(Integer.parseInt(keyValue[0]),
+									keyValue[1]);
+						}
 					}
 
 					t.notes = new ArrayList<String>();

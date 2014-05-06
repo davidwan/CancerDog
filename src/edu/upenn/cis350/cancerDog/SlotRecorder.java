@@ -24,11 +24,11 @@ public class SlotRecorder extends GridLayout {
 		this.setColumnCount(3);
 		this.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		
-		int nrHeight = 60;
+		int nrHeight = 80;
 		
 		for (int i=0; i<3; ++i) {
 			TextView tv = new TextView(context);
-			tv.setTextSize((int)(0.4*nrHeight));
+			tv.setTextSize((int)(0.3*nrHeight));
 			tv.setText(results[i]);
 			tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
 			nr[i] = new NumberRecorder(context, nrHeight);

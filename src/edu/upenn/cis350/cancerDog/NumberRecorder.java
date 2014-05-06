@@ -42,7 +42,7 @@ public class NumberRecorder extends LinearLayout {
 	
 	private void initPlusButton(Context context) {
 		plus = new Button(context);
-		plus.setTextSize((int)(0.5*height));
+		plus.setTextSize((int)(0.3*height));
 		plus.setText("+");
 		
 		plus.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +57,7 @@ public class NumberRecorder extends LinearLayout {
 	
 	private void initMinusButton(Context context) {
 		minus = new Button(context);
-		minus.setTextSize((int)(0.5*height));
+		minus.setTextSize((int)(0.3*height));
 		minus.setText("-");
 		
 		minus.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class NumberRecorder extends LinearLayout {
 	
 	private void initValueText(Context context) {
 		valueText = new EditText(context);
-		valueText.setTextSize((int)(0.5*height));
+		valueText.setTextSize((int)(0.3*height));
 		valueText.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 		valueText.setText("" + value);
 		valueText.setInputType( InputType.TYPE_CLASS_NUMBER );

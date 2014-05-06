@@ -112,21 +112,21 @@ public class WheelView extends View {
 		
 		for (int i=0; i<6; ++i) {
 			double angle = Math.PI * i / 6 - Math.PI / 2 + rotatedAngle;
-			int startX = (int) (centerX + 230 * Math.cos(angle));
-			int startY = (int) (centerY + 230 * Math.sin(angle));
-			int endX = (int) (centerX + 230 * Math.cos(angle + Math.PI));
-			int endY = (int) (centerY + 230 * Math.sin(angle + Math.PI));
+			int startX = (int) (centerX + 270 * Math.cos(angle));
+			int startY = (int) (centerY + 270 * Math.sin(angle));
+			int endX = (int) (centerX + 270 * Math.cos(angle + Math.PI));
+			int endY = (int) (centerY + 270 * Math.sin(angle + Math.PI));
 			canvas.drawLine(startX, startY, endX, endY, paint);
 		}
 		
 		for (int i=0; i<wheelSize; ++i) {
 			double angle = 2 * Math.PI * i / wheelSize - Math.PI / 2 + rotatedAngle;
-			int left = (int) (centerX - 50 + 230 * Math.cos(angle));
-			int top = (int) (centerY - 50 + 230 * Math.sin(angle));
+			int left = (int) (centerX - 50 + 270 * Math.cos(angle));
+			int top = (int) (centerY - 50 + 270 * Math.sin(angle));
 			cir[i].setBounds(left, top, left+100, top+100);
 			cir[i].draw(canvas);
-			int x = (int) (centerX - 15 + 230 * Math.cos(angle));
-			int y = (int) (centerY + 15 + 230 * Math.sin(angle));
+			int x = (int) (centerX - 15 + 270 * Math.cos(angle));
+			int y = (int) (centerY + 15 + 270 * Math.sin(angle));
 			canvas.drawText("" + i, x, y, textPaint);
 		}
 		
