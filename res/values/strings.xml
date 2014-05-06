@@ -8,17 +8,13 @@
     <string name="dialog_message">Please pick the experimental for #</string>
     
     <string-array name="experimentals">
-        <item>Patient #1 Ovarian Cancer Cells</item>
-        <item>Patient #2 Ovarian Cancer Cells</item>
-        <item>Patient #1 Ovarian Cancer Plasma</item>
-        <item>Patient #2 Ovarian Cancer Plasma</item>
+        <item>Malignant Cancer Blood Plasma</item>
     </string-array>
     
     <string-array name="controls">
-        <item>Saline Solution</item>
-        <item>Patient #1 Benign Tumor Cells</item>
-        <item>Patient #2 Benign Tumor Cells</item>
-        <item>Patient #3 Normal Cells</item>
+        <item>Empty Jar</item>
+        <item>Normal Blood Plasma</item>
+        <item>Benign Blood Plasma</item>
     </string-array>
     
     <string-array name="handlers">

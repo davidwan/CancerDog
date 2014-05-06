@@ -25,21 +25,22 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 public class RandomizeActivity extends Activity implements NumberPicker.OnValueChangeListener{
-	
+
 	public static final int ButtonClickActivity_ID = 3;
-	
+
 	// UI elements
-	private NumberPicker sampleNumberPicker, controlNumberPicker;
-	
-	private int numExperimentals, numControls;
-	private int numSelectedExperimentals, numSelectedControls;
-	private ArrayList<String> experiments;
-	private ArrayList<String> controlNames;
+	private Spinner expSpinner;
+	private NumberPicker controlNumberPicker;
 	private Button nextButton;
-	
+
+	private int numControls;
+	private int numSelectedControls;
+	private ArrayList<String> controlNames;
+	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
+
 	private int expSlot;
 	private String expName;
-	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
+	
 	private ArrayList<String> experimentsArray = new ArrayList<String> ();
 	private ArrayList<String> controlsArray = new ArrayList<String> ();
 
@@ -47,38 +48,34 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_randomize);
-		
+
+		experimentsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "experimentals");
 		// Set up pre-randomize spinners
-		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.experimentals, android.R.layout.simple_spinner_item);
+		ArrayAdapter <CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item);
+		for (String s: experimentsArray) {
+			adapter.add(s);
+		}
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		//sampleSpinner = (Spinner) findViewById(R.id.spinner1);
-		//sampleSpinner.setAdapter(adapter);
-		adapter = ArrayAdapter.createFromResource(this,R.array.controls, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		//controlSpinner = (Spinner) findViewById(R.id.spinner2);
-		//controlSpinner.setAdapter(adapter);
-		
-		// Set up number pickers
-		sampleNumberPicker = (NumberPicker) findViewById(R.id.sampleNumberPicker);
-		sampleNumberPicker.setMinValue(1);
-		sampleNumberPicker.setMaxValue(3);
-		sampleNumberPicker.setValue(1);
+		expSpinner = (Spinner) findViewById(R.id.spinner);
+		expSpinner.setAdapter(adapter);
+
+		// Set up number picker
 		controlNumberPicker = (NumberPicker) findViewById(R.id.controlNumberPicker);
 		controlNumberPicker.setMinValue(0);
 		controlNumberPicker.setMaxValue(11);
 		controlNumberPicker.setValue(0);
-		sampleNumberPicker.setOnValueChangedListener(this);
 		controlNumberPicker.setOnValueChangedListener(this);
+
 		nextButton = (Button) findViewById(R.id.next);
 		nextButton.setEnabled(false);
-		
+
 	}
-	
+
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         //Toast.makeText(this, "change", Toast.LENGTH_SHORT).show();
         nextButton.setEnabled(false);
     }
-	
+
 	private void saveTrial() {
 		Trial t = Trial.getCurrentTrial(this);
 		t.setExperimentalSlot(expSlot);
@@ -86,20 +83,16 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		t.setControls(controls);
 		t.save();
 	}
-	
+
 	public void onExitButtonClick (View v) {
 		saveTrial();
 		finish();
         System.exit(0);
 	}
-	
+
 	public void onNextButtonClick (View v) {
-		if ((numExperimentals + numControls) != (experiments.size() + controlNames.size())) {
+		if (controlNames.size() < numControls) {
 			Toast.makeText(this, "Each control and experiment must be defined. Try selecting again.", Toast.LENGTH_SHORT).show();
-			nextButton.setEnabled(false);
-		}
-		else if (((numExperimentals + numControls) > 12)) {
-			Toast.makeText(this, "There are only 12 spots on the wheel. Try selecting again.", Toast.LENGTH_SHORT).show();
 			nextButton.setEnabled(false);
 		}
 		else {
@@ -108,82 +101,54 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			startActivityForResult(i,ButtonClickActivity_ID);
 		}
 	}
-	
+
 	public void makeSelections (View v) {
-		numExperimentals = sampleNumberPicker.getValue();
 		numControls = controlNumberPicker.getValue();
+		controlNames = new ArrayList<String> ();
+		numSelectedControls = 0;
 		
-		if (((numExperimentals + numControls) > 12)) {
-			Toast.makeText(this, "There are only 12 spots on the wheel. Try a different number.", Toast.LENGTH_SHORT).show();
-			nextButton.setEnabled(false);
-		}
-		else {
-			experiments = new ArrayList<String> ();
-			controlNames = new ArrayList<String> ();
-			
-			numSelectedExperimentals = 0;
-			numSelectedControls = 0;
-			
-			experimentsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "experimentals");
-			CharSequence[] experimentsSequence = experimentsArray.toArray(new CharSequence[experimentsArray.size()]);
-			
-			controlsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "controls");
-			CharSequence[] controlsSequence = controlsArray.toArray(new CharSequence[controlsArray.size()]);
-			
-			for (int i=numControls; i>0; i--) {
-				AlertDialog.Builder temp = new AlertDialog.Builder(this);
-				temp.setTitle("Pick control for #" + i);
-				temp.setItems(controlsSequence, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-		                controlNames.add(experimentsArray.get(which));
-		                numSelectedControls++;
-		                randomize();
-		            }
-			     });
-				AlertDialog tempDialog = temp.create();
-				tempDialog.show();
-			}
-			
-			for (int i=numExperimentals; i>0; i--) {
-				AlertDialog.Builder temp = new AlertDialog.Builder(this);
-				temp.setTitle("Pick experimental for #" + i);
-				temp.setItems(experimentsSequence, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-		                experiments.add(controlsArray.get(which));
-		                numSelectedExperimentals++;
-		                randomize();
-		            }
-			     });
-				AlertDialog tempDialog = temp.create();
-				tempDialog.show();
-			}
-			nextButton.setEnabled(true);
+		controlsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "controls");
+		CharSequence[] controlsSequence = controlsArray.toArray(new CharSequence[controlsArray.size()]);
+
+		for (int i=numControls; i>0; i--) {
+			AlertDialog.Builder temp = new AlertDialog.Builder(this);
+			temp.setTitle("Pick control for #" + i);
+			temp.setItems(controlsSequence, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                	controlNames.add(controlsArray.get(which));
+	                numSelectedControls++;
+	                randomize();
+	            }
+		     });
+			AlertDialog tempDialog = temp.create();
+			tempDialog.show();
 		}
 	}
-	
+
 	public void randomize() {
-		if (numSelectedExperimentals == numExperimentals && numSelectedControls == numControls) {
+		if (numSelectedControls == numControls) {
+			expName = expSpinner.getSelectedItem().toString();
 			List<Integer> availableCircles = new ArrayList<Integer>();
 			for (int i=0; i<12; ++i) {
 				availableCircles.add(i);
 			}
 			Random random = new Random();
-			
+
 			// Get experimental slot
 			int index = random.nextInt(12);  //random index in availableCircles
 			int slot = availableCircles.remove(index);  //index of sample circle
 			expSlot = slot;
-			expName = experiments.get(0);
-			
+
 			// Set control slots
 			for (int i=0; i<numControls; ++i) {
-				index = random.nextInt(12-numExperimentals-i);
+				index = random.nextInt(11 - i);
 				slot = availableCircles.remove(index);
 				controls.put(slot, controlNames.get(i));
 			}
+			nextButton.setEnabled(true);
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
