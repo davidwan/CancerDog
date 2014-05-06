@@ -114,21 +114,26 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 		controlsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "controls");
 		CharSequence[] controlsSequence = controlsArray.toArray(new CharSequence[controlsArray.size()]);
 
-		for (int i=numControls; i>0; i--) {
-			AlertDialog.Builder temp = new AlertDialog.Builder(this);
-			temp.setTitle("Pick control for #" + i);
-			temp.setItems(controlsSequence, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                	controlNames.add(controlsArray.get(which));
-	                numSelectedControls++;
-	                //randomize();
-	            }
-		     });
-			AlertDialog tempDialog = temp.create();
-			tempDialog.show();
+		if (controlsArray.size() <= 0) {
+			Toast.makeText(this, "Fill out some default controls first.", Toast.LENGTH_SHORT).show();
 		}
-		
-		nextButton.setEnabled(true);
+		else {
+			for (int i=numControls; i>0; i--) {
+				AlertDialog.Builder temp = new AlertDialog.Builder(this);
+				temp.setTitle("Pick control for #" + i);
+				temp.setItems(controlsSequence, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+	                	controlNames.add(controlsArray.get(which));
+		                numSelectedControls++;
+		                //randomize();
+		            }
+			     });
+				AlertDialog tempDialog = temp.create();
+				tempDialog.show();
+			}
+			
+			nextButton.setEnabled(true);
+		}
 	}
 
 	public void randomize() {
