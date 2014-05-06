@@ -62,15 +62,15 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
 	}
 	
 	public void testMakeSelections_zero () {
-		new Runnable() {
-			public void run() {
-				mPicker.requestFocus();
-				mPicker.setValue(0);
-				select.requestFocus();
-				select.performClick();
-				assertFalse(next.isEnabled());
+		rAct.runOnUiThread(
+			new Runnable() {
+				public void run() {
+					mPicker.setValue(0);
+					select.performClick();
+				}
 			}
-		};
+		);
+		assertFalse(next.isEnabled());
 	}
 	
 	public void testMakeSelections_morethanzero () {
@@ -78,7 +78,7 @@ public class RandomizeActivityTest extends ActivityInstrumentationTestCase2<Rand
 			new Runnable() {
 				public void run() {
 					mPicker.setValue(1);
-					assertEquals(mPicker.getValue(),1);
+					assertEquals(1, mPicker.getValue());
 					select.performClick();
 				}
 			}
