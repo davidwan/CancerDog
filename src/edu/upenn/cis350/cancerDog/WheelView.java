@@ -94,7 +94,11 @@ public class WheelView extends View {
 		if (deg < 0) {
 			deg += 360;
 		}
-		return (13 - Math.round(deg / 30)) % 12;
+		int arm = (13 - Math.round((float)deg / 30)) % 12;
+		if (arm == 0) {
+			arm = 12;
+		}
+		return arm;
 	}
 	
 	public void onDraw(Canvas canvas) {

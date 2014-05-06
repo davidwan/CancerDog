@@ -32,10 +32,12 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090032;
+        public static final int action_settings=0x7f090036;
         public static final int controlLabel=0x7f09002d;
         public static final int controlNumberPicker=0x7f090013;
         public static final int controlSpinner=0x7f090008;
+        public static final int directionSpinner=0x7f090030;
+        public static final int directionText=0x7f09002f;
         public static final int dogSpinner=0x7f090005;
         public static final int edit=0x7f09000b;
         public static final int editDefaults=0x7f09000c;
@@ -44,7 +46,7 @@ public final class R {
         public static final int editText2=0x7f090019;
         public static final int editText3=0x7f09001b;
         public static final int editText4=0x7f09001d;
-        public static final int end=0x7f09002f;
+        public static final int end=0x7f090033;
         public static final int exit=0x7f09000e;
         public static final int experimentalLabel=0x7f09002b;
         public static final int experimentalSpinner=0x7f090007;
@@ -54,10 +56,12 @@ public final class R {
         public static final int next=0x7f090011;
         public static final int next1=0x7f090014;
         public static final int next2=0x7f090027;
-        public static final int nextTrial=0x7f090031;
+        public static final int nextTrial=0x7f090035;
+        public static final int notesEditor=0x7f090032;
+        public static final int notesText=0x7f090031;
         public static final int prev1=0x7f090001;
         public static final int randomize=0x7f090010;
-        public static final int record=0x7f090030;
+        public static final int record=0x7f090034;
         public static final int spinner=0x7f090012;
         public static final int spinner1=0x7f090015;
         public static final int spinner2=0x7f090016;

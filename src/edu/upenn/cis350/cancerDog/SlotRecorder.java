@@ -24,7 +24,7 @@ public class SlotRecorder extends GridLayout {
 		this.setColumnCount(3);
 		this.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		
-		int nrHeight = 80;
+		int nrHeight = 60;
 		
 		for (int i=0; i<3; ++i) {
 			TextView tv = new TextView(context);

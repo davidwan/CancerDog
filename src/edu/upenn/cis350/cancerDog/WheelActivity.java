@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.EditText;
 
 public class WheelActivity extends Activity {
 	
@@ -20,7 +23,9 @@ public class WheelActivity extends Activity {
 	private TextView trialLabel;
 	private TextView expLabel, controlLabel;
 	private WheelView wheel;
-	private Button recordButton, nextButton, endButton;
+	private Button recordButton, nextButton;
+	private Spinner dirSpinner;
+	private EditText editNotes;
 	
 	// Trial results
 	private Result[] results = new Result[12];
@@ -41,9 +46,17 @@ public class WheelActivity extends Activity {
 		wheel = (WheelView) findViewById(R.id.wheelView);
 		recordButton = (Button) findViewById(R.id.record);
 		nextButton = (Button) findViewById(R.id.nextTrial);
-		endButton = (Button) findViewById(R.id.end);
+		
+		ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.directions, android.R.layout.simple_spinner_item);
+		dirSpinner = (Spinner) findViewById(R.id.directionSpinner);
+		dirSpinner.setAdapter(adapter);
+		
+		editNotes = (EditText) findViewById(R.id.notesEditor);
+		editNotes.setText("");
 		
 		nextButton.setEnabled(false);
+		dirSpinner.setEnabled(false);
+		editNotes.setEnabled(false);
 		
 		Trial t = Trial.getCurrentTrial(this);
 		setupLabels(t);
@@ -64,10 +77,10 @@ public class WheelActivity extends Activity {
 		Trial t = Trial.getCurrentTrial(this);
 		
 		if (!(doneWithSession && !wheel.isFixed())) {
-	//		notes = "";
-	//		notes = ((EditText) findViewById(R.id.editNotes)).getText().toString();
+			String notes = editNotes.getText().toString();
 			t.addTrialResult(results);
-			t.addNotes("");
+			t.addDirection(dirSpinner.getSelectedItem().toString());
+			t.addNotes(notes);
 		}
 		t.save(doneWithSession);
 	}
@@ -85,6 +98,8 @@ public class WheelActivity extends Activity {
 		wheel.fix();
 		nextButton.setEnabled(true);
 		recordButton.setEnabled(false);
+		dirSpinner.setEnabled(true);
+		editNotes.setEnabled(true);
 	}
 	
 	public void onNextButtonClick (View v) {
@@ -92,10 +107,13 @@ public class WheelActivity extends Activity {
 		for (int i=0; i<12; ++i) {
 			results[i].reset();
 		}
+		editNotes.setText("");
 		currTrial++;
 		wheel.unfix();
 		nextButton.setEnabled(false);
 		recordButton.setEnabled(true);
+		dirSpinner.setEnabled(false);
+		editNotes.setEnabled(false);
 	}
 	
 	public void setupLabels(Trial t) {
@@ -116,6 +134,7 @@ public class WheelActivity extends Activity {
 			}
 		}
 		
+		trialLabel.setText("Trial " + currTrial);
 		expLabel.setText(expLabel.getText() + expText.toString());
 		controlLabel.setText(controlLabel.getText() + controlText.toString());
 	}

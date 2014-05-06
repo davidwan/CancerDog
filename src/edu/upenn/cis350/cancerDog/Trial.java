@@ -34,6 +34,7 @@ public class Trial {
 	private String time;
 	private String date;
 	private ArrayList<String> notes = new ArrayList<String> ();
+	private ArrayList<String> directions = new ArrayList<String> ();
 	private ArrayList<Result[]> trialResults = new ArrayList<Result[]>();
 	private ArrayList<Integer> topArms = new ArrayList<Integer>(); // the arms that are on the top in trials
 
@@ -90,6 +91,7 @@ public class Trial {
 			int angle = preferences.getInt("topArm[" + i + "]", 0);
 			t.addTopArm(angle);
 			t.addNotes(preferences.getString("notes[" + i + "]", defaultStr));
+			//t.addDirection(preferences.getString("direction[" + i + "]", defaultStr));
 		}
 
 		cache.put(num, t);
@@ -132,6 +134,7 @@ public class Trial {
 		trial.put("notes", notes);
 		trial.put("topArm", topArms);
 		trial.put("sessionNumber", sessionNumber);
+		trial.put("direction", directions);
 		return trial;
 	}
 
@@ -184,6 +187,7 @@ public class Trial {
 			}
 			editor.putInt("topArm[" + i + "]", topArms.get(i));
 			editor.putString("notes[" + i + "]", notes.get(i));
+			editor.putString("direction[" + i + "]", directions.get(i));
 		}
 		editor.commit();
 
@@ -312,6 +316,14 @@ public class Trial {
 	public void addNotes(String n) {
 		notes.add(n);
 	}
+	
+	public ArrayList<String> getDirections() {
+		return directions;
+	}
+	
+	public void addDirection(String d) {
+		directions.add(d);
+	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();
@@ -332,6 +344,7 @@ public class Trial {
 		s.append("date: " + date + "\n");
 		for (int i = 0; i < trialResults.size(); i++) {
 			s.append("topArm[" + i + "]: " + topArms.get(i) + "\n");
+			s.append("direction[" + i + "]:" + directions.get(i) + "\n");
 			for (int j = 0; j < trialResults.get(i).length; j++) {
 				Result r = trialResults.get(i)[j];
 				s.append("results[" + i + "][" + j + "]: " + " Result: " + "Miss"
