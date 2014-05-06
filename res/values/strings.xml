@@ -24,6 +24,12 @@
         <item>Avery</item>
     </string-array>
     
+    <string-array name="dogs">
+        <item>Whimper</item>
+        <item>Ruff</item>
+        <item>Lab</item>
+    </string-array>
+    
     <string-array name="results">
         <item>Miss</item>
         <item>False</item>
