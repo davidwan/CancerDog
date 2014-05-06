@@ -109,6 +109,7 @@ public class WheelActivity extends Activity {
 		}
 		editNotes.setText("");
 		currTrial++;
+		trialLabel.setText("Trial " + currTrial);
 		wheel.unfix();
 		nextButton.setEnabled(false);
 		recordButton.setEnabled(true);
@@ -120,7 +121,7 @@ public class WheelActivity extends Activity {
 		trialLabel.setText("Trial " + currTrial);
 		
 		StringBuffer expText = new StringBuffer();
-		expText.append("Slot: " + (t.getExperimentalSlot()+1) + "\n");
+		expText.append("Slot: " + t.getExperimentalSlot() + "\n");
 		expText.append("Name: " + t.getExperimentalName() + "\n");
 		
 		HashMap<Integer, String> controls = t.getControls();
@@ -130,11 +131,10 @@ public class WheelActivity extends Activity {
 		}
 		else {
 			for (Integer i: controls.keySet()) {
-				controlText.append("Slot " + (i+1) + ": " + controls.get(i) + "\n");
+				controlText.append("Slot " + i + ": " + controls.get(i) + "\n");
 			}
 		}
 		
-		trialLabel.setText("Trial " + currTrial);
 		expLabel.setText(expLabel.getText() + expText.toString());
 		controlLabel.setText(controlLabel.getText() + controlText.toString());
 	}
@@ -144,7 +144,7 @@ public class WheelActivity extends Activity {
 		//Toast.makeText(this, "Slot " + (slot+1), Toast.LENGTH_SHORT).show();
 		currSlot = slot;
 		AlertDialog.Builder temp = new AlertDialog.Builder(this);
-		temp.setTitle("Slot " + (slot+1));
+		temp.setTitle("Slot " + slot);
 		
 		sr = new SlotRecorder(this, results[slot]);
 		temp.setView(sr);

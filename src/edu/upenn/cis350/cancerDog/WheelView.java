@@ -98,7 +98,7 @@ public class WheelView extends View {
 		if (arm == 0) {
 			arm = 12;
 		}
-		return arm;
+		return arm-1;
 	}
 	
 	public void onDraw(Canvas canvas) {
@@ -127,7 +127,7 @@ public class WheelView extends View {
 			cir[i].draw(canvas);
 			int x = (int) (centerX - 15 + 230 * Math.cos(angle));
 			int y = (int) (centerY + 15 + 230 * Math.sin(angle));
-			canvas.drawText("" + (i+1), x, y, textPaint);
+			canvas.drawText("" + i, x, y, textPaint);
 		}
 		
 		drawLabels(canvas);
