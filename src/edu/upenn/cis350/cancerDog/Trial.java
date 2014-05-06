@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 public class Trial {
@@ -95,15 +96,17 @@ public class Trial {
 		editor.commit();
 	}
 	
-	public void save() {
+	public void save(boolean doneWithTrial) {
 		Log.i("GRTTrial", "Saving");
-		SharedPreferences mainPreferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = mainPreferences.edit();
-		editor.putInt("numTrials", getNumTrials() + 1);
-		numTrials += 1;
-		editor.commit();
+		if(doneWithTrial) {
+			SharedPreferences mainPreferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = mainPreferences.edit();
+			editor.putInt("numTrials", getNumTrials() + 1);
+			numTrials += 1;
+			editor.commit();
+		}
 		SharedPreferences preferences = context.getSharedPreferences("edu.upenn.cis350.cancerDog.trial"+trialNumber, Context.MODE_PRIVATE);
-		editor = preferences.edit();
+		Editor editor = preferences.edit();
 		
 		editor.putInt("experimentalSlot", expSlot);
 		editor.putString("experimentalName", expName);
