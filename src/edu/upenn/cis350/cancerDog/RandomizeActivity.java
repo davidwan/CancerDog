@@ -40,6 +40,8 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 	private int expSlot;
 	private String expName;
 	private HashMap<Integer, String> controls = new HashMap<Integer, String>();
+	private ArrayList<String> experimentsArray = new ArrayList<String> ();
+	private ArrayList<String> controlsArray = new ArrayList<String> ();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +124,18 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			numSelectedExperimentals = 0;
 			numSelectedControls = 0;
 			
+			experimentsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "experimentals");
+			CharSequence[] experimentsSequence = experimentsArray.toArray(new CharSequence[experimentsArray.size()]);
+			
+			controlsArray = EditDefaultActivity.getGroup(RandomizeActivity.this, "controls");
+			CharSequence[] controlsSequence = controlsArray.toArray(new CharSequence[controlsArray.size()]);
+			
 			for (int i=numControls; i>0; i--) {
 				AlertDialog.Builder temp = new AlertDialog.Builder(this);
 				temp.setTitle("Pick control for #" + i);
-				temp.setItems(R.array.controls, new DialogInterface.OnClickListener() {
+				temp.setItems(controlsSequence, new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int which) {
-		                String[] temp = getResources().getStringArray(R.array.controls);
-		                controlNames.add(temp[which]);
+		                controlNames.add(experimentsArray.get(which));
 		                numSelectedControls++;
 		                randomize();
 		            }
@@ -140,10 +147,9 @@ public class RandomizeActivity extends Activity implements NumberPicker.OnValueC
 			for (int i=numExperimentals; i>0; i--) {
 				AlertDialog.Builder temp = new AlertDialog.Builder(this);
 				temp.setTitle("Pick experimental for #" + i);
-				temp.setItems(R.array.experimentals, new DialogInterface.OnClickListener() {
+				temp.setItems(experimentsSequence, new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int which) {
-		                String[] temp = getResources().getStringArray(R.array.experimentals);
-		                experiments.add(temp[which]);
+		                experiments.add(controlsArray.get(which));
 		                numSelectedExperimentals++;
 		                randomize();
 		            }
