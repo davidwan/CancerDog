@@ -453,6 +453,9 @@ public class Trial {
 					t.notes = new ArrayList<String>();
 					t.trialResults = new ArrayList<Result[]>();
 					t.topArms = new ArrayList<Integer>();
+					if (t.sessionNumber == 11) {
+						int debug = 1;
+					}
 					for (int j = 0; j < (parts.length - 9) / 3; j++) {
 						ArrayList<Result> results = new ArrayList<Result>();
 						Result r = new Result();
@@ -463,15 +466,15 @@ public class Trial {
 								r.numFalse = Integer.parseInt(keyValue[1]);
 							} else if (keyValue[0].equals("numMiss")) {
 								r.numMiss = Integer.parseInt(keyValue[1]);
-							} else if (keyValue[0].equals("numFalse")) {
-								r.numFalse = Integer.parseInt(keyValue[1]);
+							} else if (keyValue[0].equals("numSuccess")) {
+								r.numSuccess = Integer.parseInt(keyValue[1]);
 								results.add(r);
 								r = new Result();
 							}
 						}
 						Result[] rs = new Result[results.size()];
 						for (int k = 0; k < results.size(); k++) {
-							rs[i] = results.get(i);
+							rs[k] = results.get(k);
 						}
 						t.trialResults.add(rs);
 						t.notes.add(parts[11 + j * 3]);
